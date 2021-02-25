@@ -27,7 +27,7 @@ namespace WeylandMod
 
         private void Start()
         {
-            Debug.Log($"{nameof(Minimap)}: Start IsServer={ZNet.instance.IsServer()}");
+            ModLogger.LogDebug($"{nameof(Minimap)}: Start IsServer={ZNet.instance.IsServer()}");
             orig_Start();
 
             m_SharedMap_playersInfo = new List<ZNet.PlayerInfo>();
@@ -72,12 +72,12 @@ namespace WeylandMod
 
         private void RPC_SharedMap_Update(long sender, ZPackage mapData)
         {
-            Debug.Log($"{nameof(Minimap)}: RPC_SharedMap_Update Sender={sender} MapDataSize={mapData.Size()}");
+            ModLogger.LogDebug($"{nameof(Minimap)}: RPC_SharedMap_Update Sender={sender} MapDataSize={mapData.Size()}");
 
             var explored = MapCompression.Decompress(mapData.GetArray());
             if (explored.Length != m_explored.Length)
             {
-                Debug.LogError($"{nameof(Minimap)}: RPC_SharedMap_Update invalid map data");
+                ModLogger.LogError($"{nameof(Minimap)}: RPC_SharedMap_Update invalid map data");
                 return;
             }
 
@@ -96,12 +96,12 @@ namespace WeylandMod
 
         private void RPC_SharedMap_Apply(long sender, ZPackage mapData)
         {
-            Debug.Log($"{nameof(Minimap)}: RPC_SharedMap_Apply Sender={sender} MapDataSize={mapData.Size()}");
+            ModLogger.LogDebug($"{nameof(Minimap)}: RPC_SharedMap_Apply Sender={sender} MapDataSize={mapData.Size()}");
 
             var explored = MapCompression.Decompress(mapData.GetArray());
             if (explored.Length != m_explored.Length)
             {
-                Debug.LogError($"{nameof(Minimap)}: RPC_SharedMap_Apply invalid map data");
+                ModLogger.LogError($"{nameof(Minimap)}: RPC_SharedMap_Apply invalid map data");
                 return;
             }
 

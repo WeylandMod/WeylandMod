@@ -1,5 +1,4 @@
 ﻿using MonoMod;
-using UnityEngine;
 
 #pragma warning disable CS0626
 #pragma warning disable CS0649
@@ -15,7 +14,7 @@ namespace WeylandMod
         private void Awake()
         {
             ModConfig.Create();
-            Debug.Log("WeylandMod initialized.");
+            ModLogger.LogInfo("WeylandMod initialized.");
 
             orig_Awake();
         }

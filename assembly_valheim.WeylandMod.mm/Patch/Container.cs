@@ -14,8 +14,8 @@ namespace WeylandMod
         {
             if (ModConfig.Instance.ExtendedStorage.Enabled.Value)
             {
-                m_width = m_width + 1;
-                m_height = m_height + 1;
+                m_width += 1;
+                m_height += 1;
             }
 
             orig_Awake();

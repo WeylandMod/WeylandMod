@@ -1,5 +1,4 @@
 using MonoMod;
-using UnityEngine;
 
 #pragma warning disable CS0414
 #pragma warning disable CS0626
@@ -8,7 +7,7 @@ using UnityEngine;
 namespace WeylandMod
 {
     [MonoModPatch("global::ZNet")]
-    internal class PatchZNet : ZNat
+    internal class PatchZNet : ZNet
     {
         [MonoModIgnore] private bool m_publicReferencePosition;
 
@@ -16,14 +15,13 @@ namespace WeylandMod
 
         private void Awake()
         {
-            Debug.Log($"{nameof(ZNet)}: Awake");
             orig_Awake();
 
             m_publicReferencePosition = true;
         }
 
         [MonoModReplace]
-        public void SetPublicReferencePosition(bool pub)
+        public new void SetPublicReferencePosition(bool pub)
         {
         }
     }

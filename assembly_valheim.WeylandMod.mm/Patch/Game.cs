@@ -15,7 +15,7 @@ namespace WeylandMod
 
         private Player SpawnPlayer(Vector3 spawnPoint)
         {
-            Debug.Log($"{nameof(Game)}: SpawnPlayer FirstSpawn={m_firstSpawn} SpawnPoint={spawnPoint}");
+            ModLogger.LogDebug($"{nameof(Game)}: SpawnPlayer FirstSpawn={m_firstSpawn} SpawnPoint={spawnPoint}");
             var player = orig_SpawnPlayer(spawnPoint);
 
             if (!ZNet.instance.IsServer() && m_firstSpawn)
