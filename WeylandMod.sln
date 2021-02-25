@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "assembly_valheim.WeylandMod.mm", "assembly_valheim.WeylandMod.mm\assembly_valheim.WeylandMod.mm.csproj", "{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Debug|x64.Build.0 = Debug|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Debug|x86.Build.0 = Debug|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Release|x64.ActiveCfg = Release|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Release|x64.Build.0 = Release|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Release|x86.ActiveCfg = Release|Any CPU
+		{8EE442A3-BC7B-48F5-9DE0-1C2205E16CF0}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
