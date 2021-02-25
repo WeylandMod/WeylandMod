@@ -15,9 +15,9 @@ WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and re
 
 All features is configurable through config file `WeylandMod.cfg` inside BepInEx `config` directory.
 
-* [Shared Map](#sharedmap)
-* [Extended Storage](#extendedstorage)
-* [No Server Password](#noserverpassword)
+* [Shared Map](#shared-map)
+* [Extended Storage](#extended-storage)
+* [No Server Password](#no-server-password)
 
 ### Shared Map
 
@@ -39,11 +39,12 @@ Adds slots to every available container in game (cheats, boats, wagon).
 
 ### No Server Password
 
-Let you start public server without password. Can be configured to skip password check only for whitelisted players.
+Let you start public server without password.
 
 ## Roadmap
 
 * Current features improvements, especially Shared Map.
+* Skip password check only for whitelisted players.
 * Mod version check on connection.
 * User-friendly installer for Windows platform.
 * [thunderstore.io](https://thunderstore.io/) integration.
@@ -57,4 +58,4 @@ Download appropriate archive with pre-built binaries from [releases section](htt
 
 ## Building
 
-The build process is pretty straightforward, you need to place appropriate assembly files into `Dependencies` directory (check `REAMDE.md` inside). After this you can use either `dotned` CLI or Microsoft Visual Studio 2019 to build mod binaries.
+The build process is pretty straightforward, you need to place appropriate assembly files into `Dependencies` directory (check `REAMDE.md` inside). After this you can use either `dotnet` CLI or Microsoft Visual Studio 2019 to build mod binaries.
