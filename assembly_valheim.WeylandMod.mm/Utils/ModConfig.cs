@@ -14,6 +14,8 @@ namespace WeylandMod
 
         public readonly ServerConfig Server;
 
+        public readonly PlayerConfig Player;
+
         public readonly ExtendedStorageConfig ExtendedStorage;
 
         public static void Create()
@@ -35,6 +37,16 @@ namespace WeylandMod
                 ),
             };
 
+            Player = new PlayerConfig
+            {
+                ManageableDeathMarkers = ConfigFile.Bind(
+                    nameof(Player),
+                    "ManageableDeathMarkers",
+                    true,
+                    "Keep track of all your deaths and delete markers using right click."
+                ),
+            };
+
             ExtendedStorage = new ExtendedStorageConfig
             {
                 Enabled = ConfigFile.Bind(
@@ -49,6 +61,11 @@ namespace WeylandMod
         public class ServerConfig
         {
             public ConfigEntry<bool> SkipPasswordValidation;
+        }
+
+        public class PlayerConfig
+        {
+            public ConfigEntry<bool> ManageableDeathMarkers;
         }
 
         public class ExtendedStorageConfig
