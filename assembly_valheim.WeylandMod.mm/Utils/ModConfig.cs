@@ -35,6 +35,18 @@ namespace WeylandMod
                     true,
                     "Let you launch public server without password."
                 ),
+                SkipPlayerPasswordOnPermit = ConfigFile.Bind(
+                    nameof(Server),
+                    "SkipPlayerPasswordOnPermit",
+                    true,
+                    "Allow to log in to server without password if player in permittedlist.txt."
+                ),
+                RemoveSteamPassword = ConfigFile.Bind(
+                    nameof(Server),
+                    "RemoveSteamPassword",
+                    false,
+                    "Remove steam password on login through Steam->View->Servers."
+                ),
             };
 
             Player = new PlayerConfig
@@ -61,6 +73,8 @@ namespace WeylandMod
         public class ServerConfig
         {
             public ConfigEntry<bool> SkipPasswordValidation;
+            public ConfigEntry<bool> SkipPlayerPasswordOnPermit;
+            public ConfigEntry<bool> RemoveSteamPassword;
         }
 
         public class PlayerConfig
