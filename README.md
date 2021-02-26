@@ -1,4 +1,6 @@
-# WeylandMod
+![](logo.png)
+
+---
 
 WeylandMod is a Valheim mod named after legendary blacksmith Weyland from Germanic mythology.
 
