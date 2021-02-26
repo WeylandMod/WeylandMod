@@ -46,16 +46,12 @@ Implemented features:
 * Let you start public server without password.
 * Allow to log in to server without password if user listed in permittedlist.txt on server
 * Allow to remove Steam Lobby's password on connection through `Steam>View>Servers>Favourite`
-  * Note: currently this option server-side only, if you enable it, your server will be listed as server without password in Community Servers in the game
+  * Note: currently this option server-side only, if you enable it, your server will be listed as server without password in Community Servers in the game. This option will be removed when favorite servers can be accessed directly in game
 
-Planned features:
-
-* Show password icon in Community Servers list when Steam Lobby's password disabled
 
 ## Roadmap
 
 * Current features improvements, especially Shared Map.
-* Skip password check only for whitelisted players.
 * Mod version check on connection.
 * User-friendly installer for Windows platform.
 * [thunderstore.io](https://thunderstore.io/) integration.
