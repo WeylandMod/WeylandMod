@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
+    <Version>0.1.1</Version>
+    <Authors>WeylandMod</Authors>
+    <PackageId>WeylandMod</PackageId>
+    <Product>WeylandMod</Product>
+    <Description>WeylandMod is a Valheim mod named after legendary blacksmith Weyland from Germanic mythology.</Description>
+    <PackageProjectUrl>https://github.com/WeylandMod/WeylandMod</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/WeylandMod/WeylandMod</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

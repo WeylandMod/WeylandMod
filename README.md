@@ -1,10 +1,18 @@
-![](logo.png)
+![](https://i.imgur.com/NlUKpYA.png)
 
 ---
 
 WeylandMod is a Valheim mod named after legendary blacksmith Weyland from Germanic mythology.
 
 WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and relies on [BiPinEx](https://github.com/BepInEx/BepInEx) with [BepInEx.MonoMod.Loader](https://github.com/BepInEx/BepInEx.MonoMod.Loader) for mod loading.
+
+## Issues
+
+Report any WeylandMod issues [on mod GitHub](https://github.com/WeylandMod/WeylandMod/issues).
+
+Known issues:
+
+* [thunderstore.io WeylandMod package](https://valheim.thunderstore.io/package/WeylandMod/WeylandMod/) doesn't work at this moment, we are working to solve this issue.
 
 ## Sections
 
@@ -44,19 +52,17 @@ Adds slots to every available container in game (cheats, boats, wagon).
 Implemented features:
 
 * Let you start public server without password.
-* Allow to log in to server without password if user listed in permittedlist.txt on server
-* Allow to remove Steam Lobby's password on connection through `Steam>View>Servers>Favourite`
-  * Note: currently this option server-side only, if you enable it, your server will be listed as server without password in Community Servers in the game. This option will be removed when favorite servers can be accessed directly in game
-
+* Allow to log in to server without password if user listed in permittedlist.txt on server.
+* Allow to remove Steam password request on connection through `Steam > View > Servers > Favourite`.
+  * Note: if you enable this option your server will be listed as server without password (no key icon) on Community Servers tab in the game.
 
 ## Roadmap
 
 * Current features improvements, especially Shared Map.
 * Mod version check on connection.
 * User-friendly installer for Windows platform.
-* [thunderstore.io](https://thunderstore.io/) integration.
 * Keep favorite server list and resolve domain names on connect.
-* Private\hidden servers
+* Private (hidden) servers.
 
 ## Installation
 
