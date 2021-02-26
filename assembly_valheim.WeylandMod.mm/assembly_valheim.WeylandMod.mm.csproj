@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="assembly_utils">
+      <HintPath>..\Dependencies\Valheim\assembly_utils.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="assembly_valheim">
       <HintPath>..\Dependencies\Valheim\assembly_valheim.dll</HintPath>
       <Private>false</Private>

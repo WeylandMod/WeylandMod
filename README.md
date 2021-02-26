@@ -41,7 +41,16 @@ Adds slots to every available container in game (cheats, boats, wagon).
 
 ### No Server Password
 
-Let you start public server without password.
+Implemented features:
+
+* Let you start public server without password.
+* Allow to log in to server without password if user listed in permittedlist.txt on server
+* Allow to remove Steam Lobby's password on connection through `Steam>View>Servers>Favourite`
+  * Note: currently this option server-side only, if you enable it, your server will be listed as server without password in Community Servers in the game
+
+Planned features:
+
+* Show password icon in Community Servers list when Steam Lobby's password disabled
 
 ## Roadmap
 
@@ -51,6 +60,7 @@ Let you start public server without password.
 * User-friendly installer for Windows platform.
 * [thunderstore.io](https://thunderstore.io/) integration.
 * Keep favorite server list and resolve domain names on connect.
+* Private\hidden servers
 
 ## Installation
 
