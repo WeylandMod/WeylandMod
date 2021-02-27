@@ -2,13 +2,13 @@
 
 ---
 
-WeylandMod is a [Valheim](https://www.valheimgame.com/) mod named after legendary blacksmith [Weyland](https://en.wikipedia.org/wiki/Wayland_the_Smith) from Germanic mythology.
+WeylandMod is a [Valheim](https://www.valheimgame.com/) quality of life mods collection, like server shared map, managable death pins and extended storage.
 
 WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and relies on [BiPinEx](https://github.com/BepInEx/BepInEx) for mod loading.
 
 ## Issues
 
-Report any WeylandMod issues [on mod GitHub](https://github.com/WeylandMod/WeylandMod/issues).
+Report any WeylandMod issues [on GitHub](https://github.com/WeylandMod/WeylandMod/issues).
 
 ## Sections
 
