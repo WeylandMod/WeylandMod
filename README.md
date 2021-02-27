@@ -2,9 +2,9 @@
 
 ---
 
-WeylandMod is a Valheim mod named after legendary blacksmith Weyland from Germanic mythology.
+WeylandMod is a [Valheim](https://www.valheimgame.com/) mod named after legendary blacksmith [Weyland](https://en.wikipedia.org/wiki/Wayland_the_Smith) from Germanic mythology.
 
-WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and relies on [BiPinEx](https://github.com/BepInEx/BepInEx) with [BepInEx.MonoMod.Loader](https://github.com/BepInEx/BepInEx.MonoMod.Loader) for mod loading.
+WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and relies on [BiPinEx](https://github.com/BepInEx/BepInEx) for mod loading.
 
 ## Issues
 
@@ -19,7 +19,7 @@ Report any WeylandMod issues [on mod GitHub](https://github.com/WeylandMod/Weyla
 
 ## Features
 
-All features is configurable through config file `WeylandMod.cfg` inside BepInEx `config` directory.
+All features is configurable through config file `io.github.WeylandMod.cfg` inside BepInEx `config` directory.
 
 * [Shared Map](#shared-map)
 * [Extended Storage](#extended-storage)
@@ -64,8 +64,22 @@ Implemented features:
 
 **You must install mod on server and all clients for proper work!** There is no guarantee that client without mod will be able to play on modded server and vice verse.
 
-Download appropriate archive with pre-built binaries from [releases section](https://github.com/WeylandMod/WeylandMod/releases), unpack it into Valheim installation directory and you ready to go.
+Tou can use [r2modman](https://valheim.thunderstore.io/package/ebkr/r2modman/) mod manager to install [WeylandMod](https://valheim.thunderstore.io/package/WeylandMod/WeylandMod/) with all needed dependencies.
+
+Alternatively you can download appropriate archive with pre-built binaries from [releases section](https://github.com/WeylandMod/WeylandMod/releases), unpack it into Valheim installation directory and you ready to go.
 
 ## Building
 
-The build process is pretty straightforward, you need to place appropriate assembly files into `Dependencies` directory (check `REAMDE.md` inside). After this you can use either `dotnet` CLI or Microsoft Visual Studio 2019 to build mod binaries.
+Download and unpack/install these dependencies:
+
+* [BepInEx](https://github.com/BepInEx/BepInEx)
+* [MonoMod](https://github.com/MonoMod/MonoMod)
+* [AssemblyPublicizer](https://github.com/WeylandMod/AssemblyPublicizer)
+* [Unity 2019.4.20f1](https://unity3d.com/unity/qa/lts-releases)
+* [Valheim](https://www.valheimgame.com/)
+
+Alternative to Valheim paid copy you can use [Valheim Dedicated Server](https://steamdb.info/app/896660/) installed using [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD) anonymous login. We'll not cover this process here.
+
+Once you've done this use Python script `prepare_build.py` (see `--help`), it will prepare working copy for build process.
+
+After this you can use either .NET CLI or Microsoft Visual Studio 2019 to build mod binaries.

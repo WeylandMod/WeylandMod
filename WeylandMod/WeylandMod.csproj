@@ -7,28 +7,25 @@
     <Description>WeylandMod is a Valheim mod named after legendary blacksmith Weyland from Germanic mythology.</Description>
     <PackageProjectUrl>https://github.com/WeylandMod/WeylandMod</PackageProjectUrl>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Version>0.1.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="assembly_utils">
-      <HintPath>..\Dependencies\Valheim\assembly_utils_publicized.dll</HintPath>
+      <HintPath>..\Dependencies\Valheim\assembly_utils.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="assembly_valheim">
-      <HintPath>..\Dependencies\Valheim\assembly_valheim_publicized.dll</HintPath>
+      <HintPath>..\Dependencies\Valheim\assembly_valheim.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\Dependencies\BepInEx\BepInEx.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="MMHOOK_assembly_valheim_publicized">
-      <HintPath>..\Dependencies\Valheim\MMHOOK_assembly_valheim_publicized.dll</HintPath>
+    <Reference Include="MMHOOK_assembly_valheim">
+      <HintPath>..\Dependencies\Hooks\MMHOOK_assembly_valheim.dll</HintPath>
       <Private>true</Private>
-    </Reference>
-    <Reference Include="MonoMod">
-      <HintPath>..\Dependencies\MonoMod\MonoMod.dll</HintPath>
-      <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Dependencies\Unity\UnityEngine.dll</HintPath>
