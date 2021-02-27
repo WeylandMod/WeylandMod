@@ -10,10 +10,6 @@ WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and re
 
 Report any WeylandMod issues [on mod GitHub](https://github.com/WeylandMod/WeylandMod/issues).
 
-Known issues:
-
-* [thunderstore.io WeylandMod package](https://valheim.thunderstore.io/package/WeylandMod/WeylandMod/) doesn't work at this moment, we are working to solve this issue.
-
 ## Sections
 
 * [Features](#features)

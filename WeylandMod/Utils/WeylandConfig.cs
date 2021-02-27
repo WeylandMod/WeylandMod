@@ -1,47 +1,32 @@
-using System.IO;
-using BepInEx;
 using BepInEx.Configuration;
 
-namespace WeylandMod
+namespace WeylandMod.Utils
 {
-    internal class ModConfig
+    internal static class WeylandConfig
     {
-        private static ModConfig m_instance;
+        public static ServerConfig Server { get; private set; }
 
-        public static ModConfig Instance => m_instance;
+        public static PlayerConfig Player { get; private set; }
 
-        public readonly ConfigFile ConfigFile;
+        public static ExtendedStorageConfig ExtendedStorage { get; private set; }
 
-        public readonly ServerConfig Server;
-
-        public readonly PlayerConfig Player;
-
-        public readonly ExtendedStorageConfig ExtendedStorage;
-
-        public static void Create()
+        public static void Init(ConfigFile config)
         {
-            m_instance = new ModConfig();
-        }
-
-        private ModConfig()
-        {
-            ConfigFile = new ConfigFile(Path.Combine(Paths.ConfigPath, "WeylandMod.cfg"), true);
-
             Server = new ServerConfig
             {
-                SkipPasswordValidation = ConfigFile.Bind(
+                SkipPasswordValidation = config.Bind(
                     nameof(Server),
                     "SkipPasswordValidation",
                     true,
                     "Let you launch public server without password."
                 ),
-                SkipPlayerPasswordOnPermit = ConfigFile.Bind(
+                SkipPlayerPasswordOnPermit = config.Bind(
                     nameof(Server),
                     "SkipPlayerPasswordOnPermit",
                     true,
                     "Allow to log in to server without password if player in permittedlist.txt."
                 ),
-                RemoveSteamPassword = ConfigFile.Bind(
+                RemoveSteamPassword = config.Bind(
                     nameof(Server),
                     "RemoveSteamPassword",
                     false,
@@ -51,7 +36,7 @@ namespace WeylandMod
 
             Player = new PlayerConfig
             {
-                ManageableDeathMarkers = ConfigFile.Bind(
+                ManageableDeathMarkers = config.Bind(
                     nameof(Player),
                     "ManageableDeathMarkers",
                     true,
@@ -61,7 +46,7 @@ namespace WeylandMod
 
             ExtendedStorage = new ExtendedStorageConfig
             {
-                Enabled = ConfigFile.Bind(
+                Enabled = config.Bind(
                     nameof(ExtendedStorage),
                     "Enabled",
                     false,

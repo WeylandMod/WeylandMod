@@ -2,28 +2,29 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <Version>0.1.1</Version>
-    <Authors>WeylandMod</Authors>
     <PackageId>WeylandMod</PackageId>
     <Product>WeylandMod</Product>
     <Description>WeylandMod is a Valheim mod named after legendary blacksmith Weyland from Germanic mythology.</Description>
     <PackageProjectUrl>https://github.com/WeylandMod/WeylandMod</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/WeylandMod/WeylandMod</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="assembly_utils">
-      <HintPath>..\Dependencies\Valheim\assembly_utils.dll</HintPath>
+      <HintPath>..\Dependencies\Valheim\assembly_utils_publicized.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="assembly_valheim">
-      <HintPath>..\Dependencies\Valheim\assembly_valheim.dll</HintPath>
+      <HintPath>..\Dependencies\Valheim\assembly_valheim_publicized.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\Dependencies\BepInEx\BepInEx.dll</HintPath>
       <Private>false</Private>
+    </Reference>
+    <Reference Include="MMHOOK_assembly_valheim_publicized">
+      <HintPath>..\Dependencies\Valheim\MMHOOK_assembly_valheim_publicized.dll</HintPath>
+      <Private>true</Private>
     </Reference>
     <Reference Include="MonoMod">
       <HintPath>..\Dependencies\MonoMod\MonoMod.dll</HintPath>

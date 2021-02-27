@@ -3,7 +3,7 @@ using System.Collections;
 using System.IO;
 using System.IO.Compression;
 
-namespace WeylandMod
+namespace WeylandMod.Utils
 {
     internal static class MapCompression
     {
@@ -91,9 +91,10 @@ namespace WeylandMod
             using (var inputStream = new MemoryStream(input))
             using (var outputStream = new MemoryStream())
             {
-                var buffer = new byte[sizeof(uint) + 1];
+                const int sizeofIntPlusByte = sizeof(int) + 1;
+                var buffer = new byte[sizeofIntPlusByte];
 
-                while (inputStream.Read(buffer, 0, sizeof(int) + 1) > 0)
+                while (inputStream.Read(buffer, 0, sizeofIntPlusByte) > 0)
                 {
                     var count = BitConverter.ToInt32(buffer, 0);
                     var value = buffer[sizeof(int)];
