@@ -78,9 +78,20 @@ try:
 
     os.chdir(temp_dir.name)
 
-    for filename in os.listdir(options.valheim):
+    valheim_path = os.path.join(
+        options.valheim,
+        "valheim_Data", "Managed"
+    )
+
+    if not os.path.exists(valheim_path):
+        valheim_path = os.path.join(
+            options.valheim,
+            "valheim_server_Data", "Managed"
+        )
+
+    for filename in os.listdir(valheim_path):
         shutil.copyfile(
-            os.path.join(options.valheim, filename),
+            os.path.join(valheim_path, filename),
             os.path.join(temp_dir.name, filename)
         )
 
@@ -96,7 +107,7 @@ try:
 
     for filename in valheim_files:
         subprocess.call([
-            options.publicizer,
+            os.path.join(options.publicizer, "AssemblyPublicizer.exe"),
             "-e",
             "-i", os.path.join(temp_dir.name, filename),
             "-o", os.path.join(publicized_path, filename),
