@@ -23,6 +23,7 @@ All features is configurable through config file `io.github.WeylandMod.cfg` insi
 
 * [Shared Map](#shared-map)
 * [Extended Storage](#extended-storage)
+* [Managable Death Markers](#managable-death-markers)
 * [No Server Password](#no-server-password)
 
 ### Shared Map
@@ -42,6 +43,10 @@ Planned features:
 ### Extended Storage
 
 Adds slots to every available container in game (cheats, boats, wagon).
+
+### Managable Death Markers
+
+All you death positions (not only last one) are now presented on map and you can remove any death marker by right-clicking on it.
 
 ### No Server Password
 
