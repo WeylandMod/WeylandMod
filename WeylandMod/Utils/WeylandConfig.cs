@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using UnityEngine;
 
 namespace WeylandMod.Utils
 {
@@ -7,6 +8,8 @@ namespace WeylandMod.Utils
         public static ServerConfig Server { get; private set; }
 
         public static PlayerConfig Player { get; private set; }
+
+        public static SharedMapConfig SharedMap { get; private set; }
 
         public static ExtendedStorageConfig ExtendedStorage { get; private set; }
 
@@ -44,6 +47,34 @@ namespace WeylandMod.Utils
                 ),
             };
 
+            SharedMap = new SharedMapConfig
+            {
+                SharedExplorationEnabled = config.Bind(
+                    nameof(SharedMap),
+                    "SharedExplorationEnabled",
+                    true,
+                    "Enable shared map exploration (implies ForcePublicPosition)."
+                ),
+                ForcePublicPosition = config.Bind(
+                    nameof(SharedMap),
+                    "ForcePublicPosition",
+                    true,
+                    "Force players public positions."
+                ),
+                SharedPinsEnabled = config.Bind(
+                    nameof(SharedMap),
+                    "SharedPinsEnabled",
+                    true,
+                    "Enable shared pins."
+                ),
+                SharedPinColor = config.Bind(
+                    nameof(SharedMap),
+                    "SharedPinColor",
+                    new Color(0.7f, 0.7f, 1.0f),
+                    "Color for shared pins from other players."
+                ),
+            };
+
             ExtendedStorage = new ExtendedStorageConfig
             {
                 Enabled = config.Bind(
@@ -65,6 +96,14 @@ namespace WeylandMod.Utils
         public class PlayerConfig
         {
             public ConfigEntry<bool> ManageableDeathMarkers;
+        }
+
+        public class SharedMapConfig
+        {
+            public ConfigEntry<bool> SharedExplorationEnabled;
+            public ConfigEntry<bool> ForcePublicPosition;
+            public ConfigEntry<bool> SharedPinsEnabled;
+            public ConfigEntry<Color> SharedPinColor;
         }
 
         public class ExtendedStorageConfig

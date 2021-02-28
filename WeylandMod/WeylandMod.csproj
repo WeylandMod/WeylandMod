@@ -7,7 +7,7 @@
     <Description>WeylandMod is a Valheim mod named after legendary blacksmith Weyland from Germanic mythology.</Description>
     <PackageProjectUrl>https://github.com/WeylandMod/WeylandMod</PackageProjectUrl>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Version>0.1.4</Version>
+    <Version>0.1.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
