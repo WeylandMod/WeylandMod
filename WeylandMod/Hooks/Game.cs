@@ -22,7 +22,7 @@ namespace WeylandMod.Hooks
 
             if (!ZNet.instance.IsServer() && self.m_firstSpawn)
             {
-                MinimapHooks.SharedMapUpdate();
+                Minimap.instance.SharedMapSend();
             }
 
             return player;

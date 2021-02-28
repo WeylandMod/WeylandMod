@@ -4,7 +4,7 @@ using WeylandMod.Utils;
 
 namespace WeylandMod
 {
-    [BepInPlugin("io.github.WeylandMod", "WeylandMod", "0.1.4")]
+    [BepInPlugin("io.github.WeylandMod", "WeylandMod", "0.1.5")]
     internal class WeylandModPlugin : BaseUnityPlugin
     {
         public void Awake()
