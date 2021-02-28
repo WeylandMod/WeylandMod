@@ -4,10 +4,11 @@
     <TargetFramework>net45</TargetFramework>
     <PackageId>WeylandMod</PackageId>
     <Product>WeylandMod</Product>
-    <Description>WeylandMod is a Valheim mod named after legendary blacksmith Weyland from Germanic mythology.</Description>
+    <Description>WeylandMod is a Valheim quality of life mods collection, like server shared map, shared pins, managable death pins and extended storage.</Description>
     <PackageProjectUrl>https://github.com/WeylandMod/WeylandMod</PackageProjectUrl>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Version>0.1.5</Version>
+    <Title>WeylandMod</Title>
   </PropertyGroup>
 
   <ItemGroup>
