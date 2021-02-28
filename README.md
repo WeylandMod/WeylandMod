@@ -2,7 +2,7 @@
 
 ---
 
-WeylandMod is a [Valheim](https://www.valheimgame.com/) quality of life mods collection, like server shared map, managable death pins and extended storage.
+WeylandMod is a [Valheim](https://www.valheimgame.com/) quality of life mods collection, like server shared map, shared pins, managable death pins and extended storage.
 
 WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and relies on [BiPinEx](https://github.com/BepInEx/BepInEx) for mod loading.
 
@@ -33,11 +33,12 @@ Shares map exploration among all players on server, new or returned players will
 Implemented features:
 
 * Server-side explored map shared bewtween all players.
+* Server-side shared players pins.
 * Forced players public positions.
 
 Planned features:
 
-* Share bosses positions and custom pins.
+* Share known bosses across all players on server.
 * Keep explored map on server between restarts.
 
 ### Extended Storage
