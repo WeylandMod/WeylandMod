@@ -25,6 +25,7 @@ All features is configurable through config file `io.github.WeylandMod.cfg` insi
 * [Extended Storage](#extended-storage)
 * [Managable Death Markers](#managable-death-markers)
 * [No Server Password](#no-server-password)
+* [HostName Resolve On "Join IP"](#hostname-resolve-on-join-ip)
 
 ### Shared Map
 
@@ -57,12 +58,17 @@ Implemented features:
 * Allow to remove Steam password request on connection through `Steam > View > Servers > Favourite`.
   * Note: if you enable this option your server will be listed as server without password (no key icon) on Community Servers tab in the game.
 
+### HostName Resolve On "Join IP"
+
+You can now also join to server by hostname, instead of IP. Just type your server's DNS name and port and you will be connected to server.
+Note: this is client-side feature only.
+
 ## Roadmap
 
 * Current features improvements, especially Shared Map.
 * Mod version check on connection.
 * User-friendly installer for Windows platform.
-* Keep favorite server list and resolve domain names on connect.
+* Keep favorite server list.
 * Private (hidden) servers.
 
 ## Installation
