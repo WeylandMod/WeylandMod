@@ -45,6 +45,12 @@ namespace WeylandMod.Utils
                     true,
                     "Keep track of all your deaths and delete markers using right click."
                 ),
+                ResolveHostNameOnJoin = config.Bind(
+                    nameof(Player),
+                    "ResolveHostNameOnJoin",
+                    true,
+                    "Resolve DNS host names on direct connecting through \"Join IP\"."
+                ),
             };
 
             SharedMap = new SharedMapConfig
@@ -96,6 +102,7 @@ namespace WeylandMod.Utils
         public class PlayerConfig
         {
             public ConfigEntry<bool> ManageableDeathMarkers;
+            public ConfigEntry<bool> ResolveHostNameOnJoin;
         }
 
         public class SharedMapConfig
