@@ -90,8 +90,13 @@ try:
         )
 
     for filename in os.listdir(valheim_path):
+        filepath = os.path.join(valheim_path, filename)
+
+        if os.path.isdir(filepath):
+            continue
+            
         shutil.copyfile(
-            os.path.join(valheim_path, filename),
+            filepath,
             os.path.join(temp_dir.name, filename)
         )
 
