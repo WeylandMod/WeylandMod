@@ -1,4 +1,5 @@
-# Place Valheim dependencies here
+# Place publicized Valheim dependencies here
 
-* `assembly_utils.dll`
 * `assembly_valheim.dll`
+* `assembly_utils.dll`
+* `assembly_guiutils.dll`

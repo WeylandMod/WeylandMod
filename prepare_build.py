@@ -27,6 +27,7 @@ options = parser.parse_args()
 valheim_files = [
     "assembly_valheim.dll",
     "assembly_utils.dll",
+    "assembly_guiutils.dll",
 ]
 
 unity_files = [
@@ -34,8 +35,14 @@ unity_files = [
     "UnityEngine.CoreModule.dll",
 ]
 
+unity_valheim_files = [
+    "UnityEngine.UI.dll"
+]
+
 bepinex_files = [
     "BepInEx.dll",
+    "MonoMod.Utils.dll",
+    "Mono.Cecil.dll",
 ]
 
 hookgen_files = [
@@ -94,10 +101,16 @@ try:
 
         if os.path.isdir(filepath):
             continue
-            
+
         shutil.copyfile(
             filepath,
             os.path.join(temp_dir.name, filename)
+        )
+
+    for filename in unity_valheim_files:
+        shutil.copyfile(
+            os.path.join(valheim_path, filename),
+            os.path.join(unity_dependencies_path, filename)
         )
 
     for filename in hookgen_files:

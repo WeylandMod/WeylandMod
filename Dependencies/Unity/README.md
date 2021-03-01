@@ -2,3 +2,4 @@
 
 * `UnityEngine.dll`
 * `UnityEngine.CoreModule.dll`
+* `UnityEngine.UI.dll`
