@@ -17,6 +17,7 @@ namespace WeylandMod.Hooks
             if (WeylandConfig.Server.SkipPlayerPasswordOnPermit.Value)
             {
                 On.ZNet.IsAllowed += IsAllowedHook;
+                On.ZNet.CheckWhiteList += CheckWhiteListHook;
                 On.ZNet.RPC_ServerHandshake += RPC_ServerHandshakeHook;
                 On.ZNet.RPC_PeerInfo += RPC_PeerInfoHook;
             }
@@ -40,7 +41,15 @@ namespace WeylandMod.Hooks
             var clientBanned = self.m_bannedList.Contains(hostName) || self.m_bannedList.Contains(playerName);
             var clientPermitted = self.m_permittedList.Count() <= 0 || self.m_permittedList.Contains(hostName);
 
-            return !clientBanned && (clientPermitted || ZNet.m_serverPassword != "");
+            return !clientBanned && (clientPermitted || !string.IsNullOrEmpty(ZNet.m_serverPassword));
+        }
+
+        private static void CheckWhiteListHook(On.ZNet.orig_CheckWhiteList orig, ZNet self)
+        {
+            if (!string.IsNullOrEmpty(ZNet.m_serverPassword))
+                return;
+
+            orig(self);
         }
 
         private static void RPC_ServerHandshakeHook(On.ZNet.orig_RPC_ServerHandshake orig, ZNet self, ZRpc rpc)
