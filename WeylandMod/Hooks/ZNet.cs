@@ -11,8 +11,12 @@ namespace WeylandMod.Hooks
         {
             Logger = logger;
 
-            On.ZNet.Awake += AwakeHook;
-            On.ZNet.SetPublicReferencePosition += SetPublicReferencePositionHook;
+            var sharedMap = WeylandConfig.SharedMap;
+            if (sharedMap.SharedExplorationEnabled.Value || sharedMap.ForcePublicPosition.Value)
+            {
+                On.ZNet.Awake += AwakeHook;
+                On.ZNet.SetPublicReferencePosition += SetPublicReferencePositionHook;
+            }
 
             if (WeylandConfig.Server.SkipPlayerPasswordOnPermit.Value)
             {
@@ -30,7 +34,8 @@ namespace WeylandMod.Hooks
             self.m_publicReferencePosition = true;
         }
 
-        private static void SetPublicReferencePositionHook(On.ZNet.orig_SetPublicReferencePosition orig,
+        private static void SetPublicReferencePositionHook(
+            On.ZNet.orig_SetPublicReferencePosition orig,
             ZNet self, bool pub)
         {
             // denied
