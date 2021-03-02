@@ -3,7 +3,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using BepInEx.Logging;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using WeylandMod.Utils;
 
 namespace WeylandMod.Hooks
@@ -41,6 +40,11 @@ namespace WeylandMod.Hooks
             orig(self);
 
             InitSharedPinIcons(self);
+
+            if (ZNet.m_isServer && WeylandConfig.SharedMap.SharedExplorationEnabled.Value)
+            {
+                ZNet.m_world.LoadSharedMap();
+            }
 
             ZRoutedRpc.instance.Register<ZPackage>(
                 WeylandRpc.GetName("SharedMapUpdate"),
@@ -390,7 +394,7 @@ namespace WeylandMod.Hooks
             return closestPin;
         }
 
-        private static ZPackage GetSharedMap(this Minimap self)
+        public static ZPackage GetSharedMap(this Minimap self)
         {
             var pkg = new ZPackage();
             pkg.Write(SHAREDMAPVERSION);
@@ -410,7 +414,7 @@ namespace WeylandMod.Hooks
             return pkg;
         }
 
-        private static void SetSharedMap(this Minimap self, ZPackage pkg)
+        public static void SetSharedMap(this Minimap self, ZPackage pkg)
         {
             pkg.ReadInt();
 
