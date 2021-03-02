@@ -1,9 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using BepInEx.Logging;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using UnityEngine;
+using UnityEngine.UI;
 using WeylandMod.Utils;
+using Object = UnityEngine.Object;
 
 namespace WeylandMod.Hooks
 {
@@ -15,6 +20,7 @@ namespace WeylandMod.Hooks
         private static float m_exploreTimer;
         private static ConditionalWeakTable<Texture2D, Texture2D> m_textureDuplicates;
         private static IDictionary<Minimap.PinType, Sprite> m_sharedPinIcons;
+        private static GameObject m_customPinPrefab;
 
         public static void Init(ManualLogSource logger)
         {
@@ -27,6 +33,8 @@ namespace WeylandMod.Hooks
             m_textureDuplicates = new ConditionalWeakTable<Texture2D, Texture2D>();
             m_sharedPinIcons = new Dictionary<Minimap.PinType, Sprite>();
 
+            IL.Minimap.UpdatePins += UpdatePinsHook;
+
             On.Minimap.Start += StartHook;
             On.Minimap.Update += UpdateHook;
             On.Minimap.AddPin += AddPinHook;
@@ -34,12 +42,40 @@ namespace WeylandMod.Hooks
             On.Minimap.UpdateNameInput += UpdateNameInputHook;
         }
 
+        private static void UpdatePinsHook(ILContext il)
+        {
+            if (!WeylandConfig.SharedMap.SharedExplorationEnabled.Value)
+                return;
+
+            new ILCursor(il).GotoNext(x => x.MatchLdfld<Minimap>("m_pinPrefab"))
+                .Remove()
+                .Emit(OpCodes.Ldloc, 4) // push pin, Minimap.this already on stack
+                .EmitDelegate<Func<Minimap, Minimap.PinData, GameObject>>(GetPinPrefab);
+        }
+
+        private static GameObject GetPinPrefab(Minimap self, Minimap.PinData data)
+        {
+            if (!data.m_save && MinimapExt.SharedPinTypes.Contains(data.m_type))
+            {
+                return m_customPinPrefab;
+            }
+
+            return self.m_pinPrefab;
+        }
+
         private static void StartHook(On.Minimap.orig_Start orig, Minimap self)
         {
             Logger.LogDebug($"{nameof(Minimap)}: Start IsServer={ZNet.instance.IsServer()}");
             orig(self);
 
-            InitSharedPinIcons(self);
+            if (WeylandConfig.SharedMap.SharedExplorationEnabled.Value)
+            {
+                m_customPinPrefab = Object.Instantiate(self.m_pinPrefab);
+                var pinImage = m_customPinPrefab.GetComponent<Image>();
+
+                pinImage.material = new Material(pinImage.material);
+                pinImage.color = WeylandConfig.SharedMap.SharedPinColor.Value;
+            }
 
             if (ZNet.m_isServer && WeylandConfig.SharedMap.SharedExplorationEnabled.Value)
             {
@@ -65,84 +101,6 @@ namespace WeylandMod.Hooks
                 WeylandRpc.GetName("SharedPinNameUpdate"),
                 (sender, package) => { self.RPC_SharedPinNameUpdate(sender, package); }
             );
-        }
-
-        private static void InitSharedPinIcons(Minimap self)
-        {
-            m_sharedPinIcons.Clear();
-
-            foreach (var icon in self.m_icons)
-            {
-                if (!MinimapExt.SharedPinTypes.Contains(icon.m_name))
-                    continue;
-
-                m_sharedPinIcons.Add(icon.m_name, CreateSharedPinSprite(icon.m_icon));
-            }
-        }
-
-        private static Sprite CreateSharedPinSprite(Sprite sprite)
-        {
-            var readable = MakeReadableTexture2D(sprite.texture);
-
-            var rect = new RectInt(
-                (int) sprite.textureRect.x,
-                (int) sprite.textureRect.y,
-                (int) sprite.rect.width,
-                (int) sprite.rect.height
-            );
-
-            var texture = new Texture2D(rect.width, rect.height, readable.format, false);
-            var pixels = readable.GetPixels(rect.x, rect.y, rect.width, rect.height, 0);
-
-            var pinColor = WeylandConfig.SharedMap.SharedPinColor.Value;
-            for (var index = 0; index < pixels.Length; ++index)
-            {
-                var alpha = pixels[index].a;
-                pixels[index] = (pixels[index] + pinColor) / 2.0f;
-                pixels[index].a = alpha;
-            }
-
-            texture.SetPixels(pixels);
-            texture.Apply(true);
-
-            return Sprite.Create(texture, sprite.rect, new Vector2(0.5f, 0.5f));
-        }
-
-        private static Texture2D MakeReadableTexture2D(Texture2D texture)
-        {
-            // based on https://stackoverflow.com/a/44734346
-            if (texture.isReadable)
-            {
-                return texture;
-            }
-
-            if (m_textureDuplicates.TryGetValue(texture, out var readable))
-            {
-                return readable;
-            }
-
-            var render = RenderTexture.GetTemporary(
-                texture.width,
-                texture.height,
-                0,
-                RenderTextureFormat.Default,
-                RenderTextureReadWrite.Linear
-            );
-
-            Graphics.Blit(texture, render);
-
-            var active = RenderTexture.active;
-            RenderTexture.active = render;
-
-            readable = new Texture2D(texture.width, texture.height, texture.format, false);
-            readable.ReadPixels(new Rect(0, 0, render.width, render.height), 0, 0);
-            readable.Apply();
-
-            RenderTexture.active = active;
-            RenderTexture.ReleaseTemporary(render);
-
-            m_textureDuplicates.Add(texture, readable);
-            return readable;
         }
 
         private static void UpdateHook(On.Minimap.orig_Update orig, Minimap self)
@@ -178,11 +136,6 @@ namespace WeylandMod.Hooks
                 return pin;
 
             Logger.LogDebug($"AddPin {pos} {type} {name} {save} {isChecked}");
-
-            if (!save && m_sharedPinIcons.TryGetValue(pin.m_type, out var icon))
-            {
-                pin.m_icon = icon;
-            }
 
             if (save && MinimapExt.SharedPinTypes.Contains(type) && Player.m_localPlayer != null)
             {
