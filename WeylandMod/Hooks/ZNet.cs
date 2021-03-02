@@ -1,4 +1,7 @@
+using System;
 using BepInEx.Logging;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using WeylandMod.Utils;
 
 namespace WeylandMod.Hooks
@@ -22,8 +25,8 @@ namespace WeylandMod.Hooks
             {
                 On.ZNet.IsAllowed += IsAllowedHook;
                 On.ZNet.CheckWhiteList += CheckWhiteListHook;
-                On.ZNet.RPC_ServerHandshake += RPC_ServerHandshakeHook;
-                On.ZNet.RPC_PeerInfo += RPC_PeerInfoHook;
+                IL.ZNet.RPC_ServerHandshake += RPC_ServerHandshakeHook;
+                IL.ZNet.RPC_PeerInfo += RPC_PeerInfoHook;
             }
         }
 
@@ -57,54 +60,44 @@ namespace WeylandMod.Hooks
             orig(self);
         }
 
-        private static void RPC_ServerHandshakeHook(On.ZNet.orig_RPC_ServerHandshake orig, ZNet self, ZRpc rpc)
+        private static void RPC_ServerHandshakeHook(ILContext il)
         {
-            var peer = self.GetPeer(rpc);
-            if (peer == null)
-            {
-                return;
-            }
-
-            ZLog.Log($"Got handshake from client {peer.m_socket.GetEndPointString()}");
-
-            self.ClearPlayerData(peer);
-
-            var emptyPassword = string.IsNullOrEmpty(ZNet.m_serverPassword);
-            var needPassword = !(emptyPassword || self.m_permittedList.Contains(peer.m_socket.GetHostName()));
-
-            peer.m_rpc.Invoke("ClientHandshake", needPassword);
+            new ILCursor(il)
+                // find server password check
+                .GotoNext(
+                    x => x.MatchLdsfld<ZNet>("m_serverPassword"),
+                    x => x.MatchCall<String>("IsNullOrEmpty"),
+                    x => x.MatchLdcI4(0),
+                    x => x.MatchCeq()
+                )
+                // remove original check
+                .RemoveRange(4)
+                .Emit(OpCodes.Ldarg_0)
+                .Emit(OpCodes.Ldloc_0)
+                // check m_serverPassword and m_permittedList for peer hostName
+                .EmitDelegate<Func<ZNet, ZNetPeer, bool>>((self, peer) =>
+                    !string.IsNullOrEmpty(ZNet.m_serverPassword) &&
+                    !self.m_permittedList.Contains(peer.m_socket.GetEndPointString())
+                );
         }
 
-        private static void RPC_PeerInfoHook(On.ZNet.orig_RPC_PeerInfo orig, ZNet self, ZRpc rpc, ZPackage pkg)
+        private static void RPC_PeerInfoHook(ILContext il)
         {
-            if (!self.IsServer())
-            {
-                orig(self, rpc, pkg);
-                return;
-            }
-
-            var peer = self.GetPeer(rpc);
-            if (peer == null)
-            {
-                return;
-            }
-
-            // Repackage data with changed password for simplicity
-            var buffer = new ZPackage();
-            buffer.Write(pkg.ReadLong());
-            buffer.Write(pkg.ReadString());
-            buffer.Write(pkg.ReadVector3());
-            buffer.Write(pkg.ReadString());
-
-            var password = pkg.ReadString();
-            var clientPermitted = self.m_permittedList.Contains(peer.m_socket.GetHostName());
-            buffer.Write(clientPermitted ? ZNet.m_serverPassword : password);
-
-            var tail = pkg.ReadToEnd();
-            buffer.Write(tail, 0, tail.Length);
-            buffer.SetPos(0);
-
-            orig(self, rpc, buffer);
+            ILLabel successLabel = null;
+            new ILCursor(il)
+                // find original player password check, save jump label and move after
+                .GotoNext(MoveType.After,
+                    x => x.MatchLdsfld<ZNet>("m_serverPassword"),
+                    x => x.MatchLdloc(7),
+                    x => x.MatchCall<String>("op_Inequality"),
+                    x => x.MatchBrfalse(out successLabel)
+                )
+                // check if hostName in m_permittedList
+                .Emit(OpCodes.Ldarg_0) // push this ZNet
+                .Emit<ZNet>(OpCodes.Ldfld, "m_permittedList")
+                .Emit(OpCodes.Ldloc, 4) // push hostName
+                .Emit<SyncedList>(OpCodes.Callvirt, "Contains")
+                .Emit(OpCodes.Brtrue_S, successLabel);
         }
     }
 }
