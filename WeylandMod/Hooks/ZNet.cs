@@ -72,8 +72,8 @@ namespace WeylandMod.Hooks
                 )
                 // remove original check
                 .RemoveRange(4)
-                .Emit(OpCodes.Ldarg_0)
-                .Emit(OpCodes.Ldloc_0)
+                .Emit(OpCodes.Ldarg_0) // push this
+                .Emit(OpCodes.Ldloc_0) // push peer
                 // check m_serverPassword and m_permittedList for peer hostName
                 .EmitDelegate<Func<ZNet, ZNetPeer, bool>>((self, peer) =>
                     !string.IsNullOrEmpty(ZNet.m_serverPassword) &&
