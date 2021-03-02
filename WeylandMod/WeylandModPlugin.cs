@@ -18,6 +18,7 @@ namespace WeylandMod
             FejdStartupHooks.Init(Logger);
             ZNetHooks.Init(Logger);
             ZSteamMatchmakingHooks.Init(Logger);
+            WorldHooks.Init(Logger);
             GameHooks.Init(Logger);
             MinimapHooks.Init(Logger);
             PlayerHooks.Init(Logger);
