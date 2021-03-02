@@ -1,51 +1,33 @@
-using System;
+﻿using System;
 using BepInEx.Logging;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using WeylandMod.Utils;
+using WeylandMod.Core;
 
-namespace WeylandMod.Hooks
+namespace WeylandMod.Features.PermittedPlayersNoPassword
 {
-    internal static class ZNetHooks
+    internal class ZNetHooks : FeaturePart
     {
-        private static ManualLogSource Logger;
-
-        public static void Init(ManualLogSource logger)
+        public ZNetHooks(ManualLogSource logger)
+            : base(logger)
         {
-            Logger = logger;
-
-            var sharedMap = WeylandConfig.SharedMap;
-            if (sharedMap.SharedExplorationEnabled.Value || sharedMap.ForcePublicPosition.Value)
-            {
-                On.ZNet.Awake += AwakeHook;
-                On.ZNet.SetPublicReferencePosition += SetPublicReferencePositionHook;
-            }
-
-            if (WeylandConfig.Server.SkipPlayerPasswordOnPermit.Value)
-            {
-                On.ZNet.IsAllowed += IsAllowedHook;
-                On.ZNet.CheckWhiteList += CheckWhiteListHook;
-                IL.ZNet.RPC_ServerHandshake += RPC_ServerHandshakeHook;
-                IL.ZNet.RPC_PeerInfo += RPC_PeerInfoHook;
-            }
         }
 
-        private static void AwakeHook(On.ZNet.orig_Awake orig, ZNet self)
+        public override void Init()
         {
-            orig(self);
+            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}-{nameof(ZNetHooks)} Init");
 
-            self.m_publicReferencePosition = true;
+            On.ZNet.IsAllowed += IsAllowedHook;
+            On.ZNet.CheckWhiteList += CheckWhiteListHook;
+
+            IL.ZNet.RPC_ServerHandshake += RPC_ServerHandshakeHook;
+            IL.ZNet.RPC_PeerInfo += RPC_PeerInfoHook;
         }
 
-        private static void SetPublicReferencePositionHook(
-            On.ZNet.orig_SetPublicReferencePosition orig,
-            ZNet self, bool pub)
+        private bool IsAllowedHook(On.ZNet.orig_IsAllowed orig, ZNet self, string hostName, string playerName)
         {
-            // denied
-        }
+            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}-{nameof(ZNetHooks)} IsAllowed {hostName} {playerName}");
 
-        private static bool IsAllowedHook(On.ZNet.orig_IsAllowed orig, ZNet self, string hostName, string playerName)
-        {
             var clientBanned = self.m_bannedList.Contains(hostName) || self.m_bannedList.Contains(playerName);
             var clientPermitted = self.m_permittedList.Count() <= 0 || self.m_permittedList.Contains(hostName);
 
@@ -60,8 +42,10 @@ namespace WeylandMod.Hooks
             orig(self);
         }
 
-        private static void RPC_ServerHandshakeHook(ILContext il)
+        private void RPC_ServerHandshakeHook(ILContext il)
         {
+            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}-{nameof(ZNetHooks)} RPC_ServerHandshake");
+
             new ILCursor(il)
                 // find server password check
                 .GotoNext(
@@ -81,8 +65,10 @@ namespace WeylandMod.Hooks
                 );
         }
 
-        private static void RPC_PeerInfoHook(ILContext il)
+        private void RPC_PeerInfoHook(ILContext il)
         {
+            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}-{nameof(ZNetHooks)} RPC_PeerInfo");
+
             ILLabel successLabel = null;
             new ILCursor(il)
                 // find original player password check, save jump label and move after

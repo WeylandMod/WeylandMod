@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace WeylandMod.Hooks
+namespace WeylandMod.Extensions
 {
     internal static class ZRoutedRpcExt
     {

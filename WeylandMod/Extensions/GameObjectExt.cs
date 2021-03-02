@@ -2,9 +2,9 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace WeylandMod.Utils
+namespace WeylandMod.Extensions
 {
-    internal static class UnityExtensions
+    internal static class GameObjectExt
     {
         public static T AddComponentCopy<T>(this GameObject self, T other) where T : Component
         {
@@ -13,8 +13,6 @@ namespace WeylandMod.Utils
 
         private static T CopyComponent<T>(this Component self, T other) where T : Component
         {
-            // https://answers.unity.com/questions/530178/how-to-get-a-component-from-an-object-and-add-it-t.html
-
             var type = other.GetType();
             if (self.GetType() != type)
             {
