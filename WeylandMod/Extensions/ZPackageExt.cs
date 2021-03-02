@@ -1,4 +1,4 @@
-namespace WeylandMod.Hooks
+namespace WeylandMod.Extensions
 {
     internal static class ZPackageExt
     {
