@@ -4,23 +4,24 @@ using WeylandMod.Core;
 
 namespace WeylandMod.Features.SharedMap
 {
-    internal class GameHooks : FeaturePart
+    internal class GameComponent : IFeatureComponent
     {
-        public GameHooks(ManualLogSource logger)
-            : base(logger)
+        private ManualLogSource Logger { get; }
+
+        public GameComponent(ManualLogSource logger)
         {
+            Logger = logger;
         }
 
-        public override void Init()
+        public void Initialize()
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(GameHooks)} Init");
-
             On.Game.SpawnPlayer += SpawnPlayerHook;
         }
 
         private Player SpawnPlayerHook(On.Game.orig_SpawnPlayer orig, Game self, Vector3 spawnPoint)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(GameHooks)} SpawnPlayer {self.m_firstSpawn} {spawnPoint}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(GameComponent)}.SpawnPlayer " +
+                            $"FirstSpawn={self.m_firstSpawn} SpawnPoint={spawnPoint}");
 
             var player = orig(self, spawnPoint);
 

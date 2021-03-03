@@ -1,26 +1,26 @@
 ﻿using BepInEx.Logging;
 using WeylandMod.Core;
 
-namespace WeylandMod.Features.ForcedPublicPosition
+namespace WeylandMod.Features.SharedMap
 {
-    internal class ZNetHooks : FeaturePart
+    internal class ZNetComponent : IFeatureComponent
     {
-        public ZNetHooks(ManualLogSource logger)
-            : base(logger)
+        private ManualLogSource Logger { get; }
+
+        public ZNetComponent(ManualLogSource logger)
         {
+            Logger = logger;
         }
 
-        public override void Init()
+        public void Initialize()
         {
-            Logger.LogDebug($"{nameof(ForcedPublicPosition)}-{nameof(ZNetHooks)} Init");
-
             On.ZNet.Awake += AwakeHook;
             On.ZNet.SetPublicReferencePosition += SetPublicReferencePositionHook;
         }
 
         private void AwakeHook(On.ZNet.orig_Awake orig, ZNet self)
         {
-            Logger.LogDebug($"{nameof(ForcedPublicPosition)}-{nameof(ZNetHooks)} Awake");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(ZNetComponent)}.Awake");
 
             orig(self);
 

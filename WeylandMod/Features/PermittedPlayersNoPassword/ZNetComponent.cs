@@ -6,17 +6,17 @@ using WeylandMod.Core;
 
 namespace WeylandMod.Features.PermittedPlayersNoPassword
 {
-    internal class ZNetHooks : FeaturePart
+    internal class ZNetComponent : IFeatureComponent
     {
-        public ZNetHooks(ManualLogSource logger)
-            : base(logger)
+        private ManualLogSource Logger { get; }
+
+        public ZNetComponent(ManualLogSource logger)
         {
+            Logger = logger;
         }
 
-        public override void Init()
+        public void Initialize()
         {
-            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}-{nameof(ZNetHooks)} Init");
-
             On.ZNet.IsAllowed += IsAllowedHook;
             On.ZNet.CheckWhiteList += CheckWhiteListHook;
 
@@ -26,7 +26,7 @@ namespace WeylandMod.Features.PermittedPlayersNoPassword
 
         private bool IsAllowedHook(On.ZNet.orig_IsAllowed orig, ZNet self, string hostName, string playerName)
         {
-            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}-{nameof(ZNetHooks)} IsAllowed {hostName} {playerName}");
+            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}.{nameof(ZNetComponent)}.IsAllowed {hostName} {playerName}");
 
             var clientBanned = self.m_bannedList.Contains(hostName) || self.m_bannedList.Contains(playerName);
             var clientPermitted = self.m_permittedList.Count() <= 0 || self.m_permittedList.Contains(hostName);
@@ -44,7 +44,7 @@ namespace WeylandMod.Features.PermittedPlayersNoPassword
 
         private void RPC_ServerHandshakeHook(ILContext il)
         {
-            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}-{nameof(ZNetHooks)} RPC_ServerHandshake");
+            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}.{nameof(ZNetComponent)}.RPC_ServerHandshake");
 
             new ILCursor(il)
                 // find server password check
@@ -67,7 +67,7 @@ namespace WeylandMod.Features.PermittedPlayersNoPassword
 
         private void RPC_PeerInfoHook(ILContext il)
         {
-            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}-{nameof(ZNetHooks)} RPC_PeerInfo");
+            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}.{nameof(ZNetComponent)}.RPC_PeerInfo");
 
             ILLabel successLabel = null;
             new ILCursor(il)

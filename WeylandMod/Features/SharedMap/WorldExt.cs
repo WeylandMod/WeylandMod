@@ -6,21 +6,14 @@ namespace WeylandMod.Features.SharedMap
 {
     internal static class WorldExt
     {
-        private static ManualLogSource Logger { get; set; }
-
-        public static void Init(ManualLogSource logger)
-        {
-            Logger = logger;
-
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(WorldExt)} Init");
-        }
+        public static ManualLogSource Logger { private get; set; }
 
         private static string GetSharedMapPath(this World self) =>
             $"{self.m_worldSavePath}/{self.m_name}.WeylandSharedMap.dat";
 
         public static void SaveSharedMap(this World self)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(WorldExt)} SaveSharedMap");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(WorldExt)}.SaveSharedMap");
 
             var sharedMapPath = self.GetSharedMapPath();
             var newSharedMapPath = sharedMapPath + ".new";
@@ -44,7 +37,7 @@ namespace WeylandMod.Features.SharedMap
 
         public static void LoadSharedMap(this World self)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(WorldExt)} LoadSharedMap");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(WorldExt)}.LoadSharedMap");
 
             try
             {

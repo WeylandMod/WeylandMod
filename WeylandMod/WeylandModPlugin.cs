@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BepInEx;
+﻿using BepInEx;
 using WeylandMod.Core;
+using WeylandMod.Features.ExtendedStorage;
+using WeylandMod.Features.ManageableDeathPins;
+using WeylandMod.Features.NoServerPassword;
+using WeylandMod.Features.PermittedPlayersNoPassword;
+using WeylandMod.Features.SharedMap;
 
 namespace WeylandMod
 {
@@ -11,59 +13,29 @@ namespace WeylandMod
     {
         public void Awake()
         {
-            var features = new Dictionary<Type, FeatureEntry>();
-
-            foreach (Type type in typeof(WeylandModPlugin).Assembly.GetTypes())
+            var features = new IFeature[]
             {
-                if (!type.IsSubclassOf(typeof(Feature)) || features.ContainsKey(type))
+                new NoServerPassword(Logger, Config),
+                new PermittedPlayersNoPassword(Logger, Config),
+                new SharedMap(Logger, Config),
+                new ExtendedStorage(Logger, Config),
+                new ManageableDeathPins(Logger, Config),
+            };
+
+            foreach (var feature in features)
+            {
+                Logger.LogInfo($"{feature.GetType().Name}.Initialize Enabled={feature.Enabled.Value}");
+                if (!feature.Enabled.Value)
                 {
                     continue;
                 }
 
-                var instance = Activator.CreateInstance(type, Logger, Config) as Feature;
-                if (instance == null)
+                foreach (var component in feature.Components)
                 {
-                    Logger.LogError($"Failed to instantiate feature of type {type}");
-                    continue;
-                }
-
-                var feature = new FeatureEntry
-                {
-                    Instance = instance,
-                    Enabled = instance.IsEnabled(),
-                };
-
-                features.Add(type, feature);
-            }
-
-            foreach (Type type in features.SelectMany(entry => entry.Value.Instance.GetDependencies()))
-            {
-                if (features.TryGetValue(type, out var instance))
-                {
-                    instance.Enabled = true;
-                }
-                else
-                {
-                    Logger.LogError($"Failed to find dependency type {type}");
-                    return;
+                    Logger.LogDebug($"{feature.GetType().Name}.{component.GetType().Name}.Initialize");
+                    component.Initialize();
                 }
             }
-
-            foreach (var entry in features.Where(entry => entry.Value.Enabled))
-            {
-                Logger.LogInfo($"Initializing feature {entry.Key.Name}");
-
-                foreach (FeaturePart part in entry.Value.Instance.GetParts())
-                {
-                    part.Init();
-                }
-            }
-        }
-
-        private class FeatureEntry
-        {
-            public Feature Instance;
-            public bool Enabled;
         }
     }
 }

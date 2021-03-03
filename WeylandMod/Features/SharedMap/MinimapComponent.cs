@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -11,34 +12,47 @@ using Object = UnityEngine.Object;
 
 namespace WeylandMod.Features.SharedMap
 {
-    internal class MinimapHooks : FeaturePart
+    internal class MinimapComponent : IFeatureComponent
     {
-        private readonly bool _sharedPins;
-        private readonly Color _sharedPinsColor;
-        private readonly List<ZNet.PlayerInfo> _playersInfo;
+        private ManualLogSource Logger { get; }
+
+        private ConfigEntry<bool> SharedPins { get; }
+        private ConfigEntry<Color> SharedPinsColor { get; }
+
+        private List<ZNet.PlayerInfo> _playersInfo;
         private float _exploreTimer;
         private GameObject _customPinPrefab;
 
-        public MinimapHooks(ManualLogSource logger, bool sharedPins, Color sharedPinsColor)
-            : base(logger)
+        public MinimapComponent(ManualLogSource logger, ConfigFile config)
         {
-            MinimapExt.Init(logger);
+            Logger = logger;
+            MinimapExt.Logger = logger;
 
-            _sharedPins = sharedPins;
-            _sharedPinsColor = sharedPinsColor;
+            SharedPins = config.Bind(
+                nameof(SharedMap),
+                nameof(SharedPins),
+                true,
+                "Shared custom player pins."
+            );
+
+            SharedPinsColor = config.Bind(
+                nameof(SharedMap),
+                nameof(SharedPinsColor),
+                new Color(0.7f, 0.7f, 1.0f),
+                "Color for pins shared by other players."
+            );
+        }
+
+        public void Initialize()
+        {
             _playersInfo = new List<ZNet.PlayerInfo>();
             _exploreTimer = 0.0f;
             _customPinPrefab = null;
-        }
-
-        public override void Init()
-        {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapHooks)} Init");
 
             On.Minimap.Start += StartHook;
             On.Minimap.Update += UpdateHook;
 
-            if (_sharedPins)
+            if (SharedPins.Value)
             {
                 On.Minimap.AddPin += AddPinHook;
                 On.Minimap.RemovePin_PinData += RemovePinHook;
@@ -50,17 +64,17 @@ namespace WeylandMod.Features.SharedMap
 
         private void StartHook(On.Minimap.orig_Start orig, Minimap self)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapHooks)} Start IsServer={ZNet.m_isServer}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.Start Server={ZNet.m_isServer}");
 
             orig(self);
 
-            if (_sharedPins)
+            if (SharedPins.Value)
             {
                 _customPinPrefab = Object.Instantiate(self.m_pinPrefab);
                 var pinImage = _customPinPrefab.GetComponent<Image>();
 
                 pinImage.material = new Material(pinImage.material);
-                pinImage.color = _sharedPinsColor;
+                pinImage.color = SharedPinsColor.Value;
             }
 
             ZNet.m_world.LoadSharedMap();
@@ -109,7 +123,8 @@ namespace WeylandMod.Features.SharedMap
             On.Minimap.orig_AddPin orig, Minimap self, Vector3 pos, Minimap.PinType type,
             string name, bool save, bool isChecked)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapHooks)} AddPin {pos} {type} {name} {save} {isChecked}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.AddPin " +
+                            $"Pos={pos} Type={type} Name={name} Save={save} Checked={isChecked}");
 
             var pin = orig(self, pos, type, name, save, isChecked);
 
@@ -127,7 +142,8 @@ namespace WeylandMod.Features.SharedMap
 
         private void RemovePinHook(On.Minimap.orig_RemovePin_PinData orig, Minimap self, Minimap.PinData pin)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapHooks)} RemovePin {pin.m_pos} {pin.m_type} {pin.m_name}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.RemovePin " +
+                            $"Pos={pin.m_pos} Type={pin.m_type} Name={pin.m_name}");
 
             orig(self, pin);
 
@@ -151,7 +167,8 @@ namespace WeylandMod.Features.SharedMap
             if (pin == null || oldName == pin.m_name)
                 return;
 
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapHooks)} UpdateNameInput {pin.m_pos} {pin.m_type} {pin.m_name}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.UpdateNameInput " +
+                            $"Pos={pin.m_pos} Type={pin.m_type} Name={pin.m_name}");
 
             var pkg = new ZPackage();
             pkg.Write(0); // version
@@ -162,7 +179,7 @@ namespace WeylandMod.Features.SharedMap
 
         private void UpdatePinsHook(ILContext il)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapHooks)} UpdatePins");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.UpdatePins");
 
             new ILCursor(il).GotoNext(x => x.MatchLdfld<Minimap>("m_pinPrefab"))
                 .Remove()

@@ -11,7 +11,7 @@ namespace WeylandMod.Features.SharedMap
     {
         private const int Version = 1;
 
-        private static ManualLogSource Logger { get; set; }
+        public static ManualLogSource Logger { private get; set; }
 
         public static readonly ISet<Minimap.PinType> SharedPinTypes = new HashSet<Minimap.PinType>
         {
@@ -22,16 +22,9 @@ namespace WeylandMod.Features.SharedMap
             Minimap.PinType.Icon4,
         };
 
-        public static void Init(ManualLogSource logger)
-        {
-            Logger = logger;
-
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} Init");
-        }
-
         public static void SharedMapSend(this Minimap self)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} SharedMapSend");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.SharedMapSend");
 
             ZRoutedRpc.instance.InvokeRoutedRPC(
                 WeylandRpc.GetName("SharedMapUpdate"),
@@ -41,7 +34,7 @@ namespace WeylandMod.Features.SharedMap
 
         public static void RPC_SharedMapUpdate(this Minimap self, long sender, ZPackage pkg)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} RPC_SharedMapUpdate {pkg.Size()}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.RPC_SharedMapUpdate Size={pkg.Size()}");
 
             self.SetSharedMap(pkg);
 
@@ -53,7 +46,7 @@ namespace WeylandMod.Features.SharedMap
 
         public static void RPC_SharedPinAdd(this Minimap self, long sender, ZPackage pkg)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} RPC_SharedPinAdd {pkg.Size()}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.RPC_SharedPinAdd Size={pkg.Size()}");
 
             self.SharedPinAdd(pkg);
 
@@ -67,7 +60,7 @@ namespace WeylandMod.Features.SharedMap
 
         public static void RPC_SharedPinRemove(this Minimap self, long sender, ZPackage pkg)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} RPC_SharedPinRemove {pkg.Size()}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.RPC_SharedPinRemove Size={pkg.Size()}");
 
             self.SharedPinRemove(pkg);
 
@@ -81,7 +74,7 @@ namespace WeylandMod.Features.SharedMap
 
         public static void RPC_SharedPinNameUpdate(this Minimap self, long sender, ZPackage pkg)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} RPC_SharedPinNameUpdate {pkg.Size()}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.RPC_SharedPinNameUpdate Size={pkg.Size()}");
 
             self.SharedPinNameUpdate(pkg);
 
@@ -95,7 +88,7 @@ namespace WeylandMod.Features.SharedMap
 
         private static void SharedPinAdd(this Minimap self, ZPackage pkg)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} SharedPinAdd {pkg.Size()}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.SharedPinAdd Size={pkg.Size()}");
 
             pkg.ReadInt(); // version
             var pin = SharedPinData.Read(pkg);
@@ -109,7 +102,7 @@ namespace WeylandMod.Features.SharedMap
 
         private static void SharedPinRemove(this Minimap self, ZPackage pkg)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} SharedPinRemove {pkg.Size()}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.SharedPinRemove Size={pkg.Size()}");
 
             pkg.ReadInt(); // version
             var pin = SharedPinData.Read(pkg);
@@ -123,7 +116,7 @@ namespace WeylandMod.Features.SharedMap
 
         private static void SharedPinNameUpdate(this Minimap self, ZPackage pkg)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} SharedPinNameUpdate {pkg.Size()}");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.SharedPinNameUpdate Size={pkg.Size()}");
 
             pkg.ReadInt(); // version
             var pin = SharedPinData.Read(pkg);
@@ -132,12 +125,10 @@ namespace WeylandMod.Features.SharedMap
             if (closestPin == null || closestPin.m_save)
                 return;
 
-            Logger.LogDebug($"PinNameUpdate {closestPin.m_pos} {pin.Type} {pin.Name}");
             closestPin.m_name = pin.Name;
         }
 
-        private static Minimap.PinData GetClosestPinWithType(
-            this Minimap self, Vector3 pos, Minimap.PinType type, float radius)
+        private static Minimap.PinData GetClosestPinWithType(this Minimap self, Vector3 pos, Minimap.PinType type, float radius)
         {
             Minimap.PinData closestPin = null;
             var closestDist = 0.0f;
@@ -160,7 +151,7 @@ namespace WeylandMod.Features.SharedMap
 
         public static ZPackage GetSharedMap(this Minimap self)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} GetSharedMap");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.GetSharedMap");
 
             var pkg = new ZPackage();
             pkg.Write(Version);
@@ -182,7 +173,7 @@ namespace WeylandMod.Features.SharedMap
 
         public static void SetSharedMap(this Minimap self, ZPackage pkg)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} SetSharedMap");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.SetSharedMap");
 
             pkg.ReadInt();
 
@@ -208,11 +199,11 @@ namespace WeylandMod.Features.SharedMap
 
         private static void ApplySharedMapExplored(this Minimap self, bool[] explored)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(MinimapExt)} ApplySharedMapExplored");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapExt)}.ApplySharedMapExplored");
 
             if (explored.Length != self.m_explored.Length)
             {
-                Logger.LogError($"{nameof(SharedMap)}-{nameof(MinimapExt)} invalid explored array length");
+                Logger.LogError($"{nameof(SharedMap)}.{nameof(MinimapExt)} invalid explored array length");
                 return;
             }
 

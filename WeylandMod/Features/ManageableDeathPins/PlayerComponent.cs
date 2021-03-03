@@ -3,23 +3,23 @@ using WeylandMod.Core;
 
 namespace WeylandMod.Features.ManageableDeathPins
 {
-    internal class PlayerHooks : FeaturePart
+    internal class PlayerComponent : IFeatureComponent
     {
-        public PlayerHooks(ManualLogSource logger)
-            : base(logger)
+        private ManualLogSource Logger { get; }
+
+        public PlayerComponent(ManualLogSource logger)
         {
+            Logger = logger;
         }
 
-        public override void Init()
+        public void Initialize()
         {
-            Logger.LogDebug($"{nameof(ManageableDeathPins)}-{nameof(PlayerHooks)} Init");
-
             On.Player.OnDeath += OnDeathHook;
         }
 
         private void OnDeathHook(On.Player.orig_OnDeath orig, Player self)
         {
-            Logger.LogDebug($"{nameof(ManageableDeathPins)}-{nameof(PlayerHooks)} OnDeath");
+            Logger.LogDebug($"{nameof(ManageableDeathPins)}.{nameof(PlayerComponent)}.OnDeath");
 
             orig(self);
 

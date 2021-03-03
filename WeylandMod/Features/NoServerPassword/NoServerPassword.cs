@@ -1,30 +1,28 @@
-using System.Collections.Generic;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using WeylandMod.Core;
 
 namespace WeylandMod.Features.NoServerPassword
 {
-    internal sealed class NoServerPassword : Feature
+    internal sealed class NoServerPassword : IFeature
     {
-        private ConfigEntry<bool> Enabled { get; }
+        public ConfigEntry<bool> Enabled { get; }
+
+        public IFeatureComponent[] Components { get; }
 
         public NoServerPassword(ManualLogSource logger, ConfigFile config)
-            : base(logger, config)
         {
-            Enabled = Config.Bind(
+            Enabled = config.Bind(
                 nameof(NoServerPassword),
                 nameof(Enabled),
                 true,
                 "Let you launch public server without password."
             );
-        }
 
-        public override bool IsEnabled() => Enabled.Value;
-
-        public override IEnumerable<FeaturePart> GetParts()
-        {
-            yield return new FejdStartupHooks(Logger);
+            Components = new IFeatureComponent[]
+            {
+                new FejdStartupComponent(logger),
+            };
         }
     }
 }

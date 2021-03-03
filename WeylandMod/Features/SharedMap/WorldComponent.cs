@@ -3,26 +3,27 @@ using WeylandMod.Core;
 
 namespace WeylandMod.Features.SharedMap
 {
-    internal class WorldHooks : FeaturePart
+    internal class WorldComponent : IFeatureComponent
     {
-        public WorldHooks(ManualLogSource logger)
-            : base(logger)
+        private ManualLogSource Logger { get; }
+
+        public WorldComponent(ManualLogSource logger)
         {
-            WorldExt.Init(logger);
+            Logger = logger;
+            WorldExt.Logger = logger;
         }
 
-        public override void Init()
+        public void Initialize()
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(WorldHooks)} Init");
-
             On.World.SaveWorldMetaData += SaveWorldMetaDataHook;
         }
 
         private void SaveWorldMetaDataHook(On.World.orig_SaveWorldMetaData orig, World self)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}-{nameof(WorldHooks)} SaveWorldMetaData");
+            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(WorldComponent)}.SaveWorldMetaData");
 
             orig(self);
+
             self.SaveSharedMap();
         }
     }

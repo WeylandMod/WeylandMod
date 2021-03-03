@@ -1,30 +1,28 @@
-﻿using System.Collections.Generic;
-using BepInEx.Configuration;
+﻿using BepInEx.Configuration;
 using BepInEx.Logging;
 using WeylandMod.Core;
 
 namespace WeylandMod.Features.ExtendedStorage
 {
-    internal sealed class ExtendedStorage : Feature
+    internal sealed class ExtendedStorage : IFeature
     {
-        private ConfigEntry<bool> Enabled { get; }
+        public ConfigEntry<bool> Enabled { get; }
+
+        public IFeatureComponent[] Components { get; }
 
         public ExtendedStorage(ManualLogSource logger, ConfigFile config)
-            : base(logger, config)
         {
-            Enabled = Config.Bind(
+            Enabled = config.Bind(
                 nameof(ExtendedStorage),
                 nameof(Enabled),
                 false,
                 "Enable ExtendedStorage feature."
             );
-        }
 
-        public override bool IsEnabled() => Enabled.Value;
-
-        public override IEnumerable<FeaturePart> GetParts()
-        {
-            yield return new ContainerHooks(Logger);
+            Components = new IFeatureComponent[]
+            {
+                new ContainerComponent(logger),
+            };
         }
     }
 }
