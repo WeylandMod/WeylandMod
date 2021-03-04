@@ -6,25 +6,21 @@ namespace WeylandMod.Features.SharedMap
 {
     internal sealed class SharedMap : IFeature
     {
-        public ConfigEntry<bool> Enabled { get; }
+        public string Name => nameof(SharedMap);
+
+        public IFeatureConfig Config { get; }
 
         public IFeatureComponent[] Components { get; }
 
         public SharedMap(ManualLogSource logger, ConfigFile config)
         {
-            Enabled = config.Bind(
-                nameof(SharedMap),
-                nameof(Enabled),
-                true,
-                "Shared map exploration between all players on server."
-            );
-
+            Config = new SharedMapConfig(Name, config);
             Components = new IFeatureComponent[]
             {
                 new ZNetComponent(logger),
                 new GameComponent(logger),
                 new WorldComponent(logger),
-                new MinimapComponent(logger, config),
+                new MinimapComponent(logger, Config as SharedMapConfig),
             };
         }
     }

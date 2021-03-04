@@ -1,34 +1,44 @@
 ﻿using BepInEx.Logging;
+using MonoMod.Cil;
 using WeylandMod.Core;
 
 namespace WeylandMod.Features.SharedMap
 {
     internal class ZNetComponent : IFeatureComponent
     {
-        private ManualLogSource Logger { get; }
+        private readonly ManualLogSource _logger;
 
         public ZNetComponent(ManualLogSource logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
-        public void Initialize()
+        public void OnLaunch(bool enabled)
         {
-            On.ZNet.Awake += AwakeHook;
-            On.ZNet.SetPublicReferencePosition += SetPublicReferencePositionHook;
         }
 
-        private void AwakeHook(On.ZNet.orig_Awake orig, ZNet self)
+        public void OnConnect()
         {
-            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(ZNetComponent)}.Awake");
+            ZNet.instance.SetPublicReferencePosition(true);
 
-            orig(self);
-
-            self.m_publicReferencePosition = true;
+            IL.ZNet.SetPublicReferencePosition += SetPublicReferencePositionPatch;
         }
 
-        private static void SetPublicReferencePositionHook(On.ZNet.orig_SetPublicReferencePosition orig, ZNet self, bool pub)
+        public void OnDisconnect()
         {
+            IL.ZNet.SetPublicReferencePosition -= SetPublicReferencePositionPatch;
+        }
+
+        private static void SetPublicReferencePositionPatch(ILContext il)
+        {
+            // remove setting m_publicReferencePosition
+            new ILCursor(il)
+                .GotoNext(
+                    x => x.MatchLdarg(0),
+                    x => x.MatchLdarg(1),
+                    x => x.MatchStfld<ZNet>("m_publicReferencePosition")
+                )
+                .RemoveRange(3);
         }
     }
 }

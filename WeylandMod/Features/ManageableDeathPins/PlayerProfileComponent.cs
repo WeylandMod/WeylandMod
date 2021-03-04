@@ -5,16 +5,27 @@ namespace WeylandMod.Features.ManageableDeathPins
 {
     internal class PlayerProfileComponent : IFeatureComponent
     {
-        private ManualLogSource Logger { get; }
+        private readonly ManualLogSource _logger;
 
         public PlayerProfileComponent(ManualLogSource logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
-        public void Initialize()
+        public void OnLaunch(bool enabled)
         {
+            if (!enabled)
+                return;
+
             On.PlayerProfile.HaveDeathPoint += HaveDeathPointHook;
+        }
+
+        public void OnConnect()
+        {
+        }
+
+        public void OnDisconnect()
+        {
         }
 
         private static bool HaveDeathPointHook(On.PlayerProfile.orig_HaveDeathPoint orig, PlayerProfile self)

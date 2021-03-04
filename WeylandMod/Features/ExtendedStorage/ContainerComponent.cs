@@ -5,16 +5,25 @@ namespace WeylandMod.Features.ExtendedStorage
 {
     internal class ContainerComponent : IFeatureComponent
     {
-        private ManualLogSource Logger { get; }
+        private readonly ManualLogSource _logger;
 
         public ContainerComponent(ManualLogSource logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
-        public void Initialize()
+        public void OnLaunch(bool enabled)
+        {
+        }
+
+        public void OnConnect()
         {
             On.Container.Awake += AwakeHook;
+        }
+
+        public void OnDisconnect()
+        {
+            On.Container.Awake -= AwakeHook;
         }
 
         private static void AwakeHook(On.Container.orig_Awake orig, Container self)

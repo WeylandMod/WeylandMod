@@ -6,26 +6,35 @@ namespace WeylandMod.Features.SharedMap
 {
     internal class GameComponent : IFeatureComponent
     {
-        private ManualLogSource Logger { get; }
+        private readonly ManualLogSource _logger;
 
         public GameComponent(ManualLogSource logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
-        public void Initialize()
+        public void OnLaunch(bool enabled)
+        {
+        }
+
+        public void OnConnect()
         {
             On.Game.SpawnPlayer += SpawnPlayerHook;
         }
 
+        public void OnDisconnect()
+        {
+            On.Game.SpawnPlayer -= SpawnPlayerHook;
+        }
+
         private Player SpawnPlayerHook(On.Game.orig_SpawnPlayer orig, Game self, Vector3 spawnPoint)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(GameComponent)}.SpawnPlayer " +
-                            $"FirstSpawn={self.m_firstSpawn} SpawnPoint={spawnPoint}");
+            _logger.LogDebug($"{nameof(SharedMap)}.{nameof(GameComponent)}.SpawnPlayer " +
+                             $"FirstSpawn={self.m_firstSpawn} SpawnPoint={spawnPoint}");
 
             var player = orig(self, spawnPoint);
 
-            if (!ZNet.instance.IsServer() && self.m_firstSpawn)
+            if (!ZNet.m_isServer && self.m_firstSpawn)
             {
                 Minimap.instance.SharedMapSend();
             }

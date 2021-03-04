@@ -5,16 +5,27 @@ namespace WeylandMod.Features.NoServerPassword
 {
     internal class FejdStartupComponent : IFeatureComponent
     {
-        private ManualLogSource Logger { get; }
+        private readonly ManualLogSource _logger;
 
         public FejdStartupComponent(ManualLogSource logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
-        public void Initialize()
+        public void OnLaunch(bool enabled)
         {
+            if (!enabled)
+                return;
+
             On.FejdStartup.IsPublicPasswordValid += IsPublicPasswordValidHook;
+        }
+
+        public void OnConnect()
+        {
+        }
+
+        public void OnDisconnect()
+        {
         }
 
         private static bool IsPublicPasswordValidHook(

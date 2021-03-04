@@ -2,6 +2,8 @@
 {
     internal interface IFeatureComponent
     {
-        void Initialize();
+        void OnLaunch(bool enabled);
+        void OnConnect();
+        void OnDisconnect();
     }
 }
