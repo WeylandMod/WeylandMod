@@ -28,6 +28,7 @@ Feature | Description | Server | Client | Config section
 [Shared Map](#shared-map) | Shared map exploration and custom pins between all players on server. | ✓ | ✓ | `[SharedMap]`
 [Extended Storage](#extended-storage) | Extends size of every game container. | ✓ | ✓ | `[ExtendedStorage]`
 [Managable Death Pins](#managable-death-pins) | All deaths are marked and player can remove death pins. | | ✓ | `[ManageableDeathPins]`
+[Precise Rotation](#precise-rotation) | Rotate objects by custom angle while building. | | ✓ | `[PreciseRotation]`
 [No Server Password](#no-server-password) | Launch public server without password. | ✓ | | `[NoServerPassword]`
 [Permitted Players No Password](#no-server-password) | Permitted players can join server without password. | ✓ | | `[PermittedPlayersNoPassword]`
 
@@ -53,6 +54,10 @@ Adds slots to every available container in game (cheats, boats, wagon).
 ### Managable Death Pins
 
 All you death positions (not only last one) are now presented on map and you can remove any death marker by right-clicking on it.
+
+### Precise Rotation
+
+Let you configure the arbitrary rotation angles for placeable objects in build mode. Precision rotation mode activated by holding down configurable key (LCtrl by default). Server can force clients to disable this feature or configure custom rotation angles.
 
 ### No Server Password
 
