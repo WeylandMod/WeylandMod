@@ -21,11 +21,15 @@ Report any WeylandMod issues [on GitHub](https://github.com/WeylandMod/WeylandMo
 
 All features is configurable through config file `io.github.WeylandMod.cfg` inside BepInEx `config` directory.
 
-* [Shared Map](#shared-map)
-* [Extended Storage](#extended-storage)
-* [Managable Death Markers](#managable-death-markers)
-* [No Server Password](#no-server-password)
-* [HostName Resolve On "Join IP"](#hostname-resolve-on-join-ip)
+Different mod features demands installation on server, client or both in order to work properly, you can check requirements in the table below. The mod syncs client configuration with server configuration on connect, server side configuration has priority over client-server features, but client-only features are unaffected.
+
+Feature | Description | Server | Client | Config section
+:------ | :------ | :----: | :----: | :-------------
+[Shared Map](#shared-map) | Shared map exploration and custom pins between all players on server. | ✓ | ✓ | `[SharedMap]`
+[Extended Storage](#extended-storage) | Extends size of every game container. | ✓ | ✓ | `[ExtendedStorage]`
+[Managable Death Pins](#managable-death-pins) | All deaths are marked and player can remove death pins. | | ✓ | `[ManageableDeathPins]`
+[No Server Password](#no-server-password) | Launch public server without password. | ✓ | | `[NoServerPassword]`
+[Permitted Players No Password](#no-server-password) | Permitted players can join server without password. | ✓ | | `[PermittedPlayersNoPassword]`
 
 ### Shared Map
 
@@ -46,7 +50,7 @@ Planned features:
 
 Adds slots to every available container in game (cheats, boats, wagon).
 
-### Managable Death Markers
+### Managable Death Pins
 
 All you death positions (not only last one) are now presented on map and you can remove any death marker by right-clicking on it.
 
@@ -58,11 +62,6 @@ Implemented features:
 * Allow to log in to server without password if user listed in permittedlist.txt on server.
 * Allow to remove Steam password request on connection through `Steam > View > Servers > Favourite`.
   * Note: if you enable this option your server will be listed as server without password (no key icon) on Community Servers tab in the game.
-
-### HostName Resolve On "Join IP"
-
-You can now also join to server by hostname, instead of IP. Just type your server's DNS name and port and you will be connected to server.
-Note: this is client-side feature only.
 
 ## Roadmap
 
