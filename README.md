@@ -84,6 +84,8 @@ Tou can use [r2modman](https://valheim.thunderstore.io/package/ebkr/r2modman/) m
 
 Alternatively you can download appropriate archive with pre-built binaries from [releases section](https://github.com/WeylandMod/WeylandMod/releases), unpack it into Valheim installation directory and you ready to go.
 
+**On Linux you need to install libc6-dev for BepInEx to work!**
+
 ## Building
 
 Download and unpack/install these dependencies:
