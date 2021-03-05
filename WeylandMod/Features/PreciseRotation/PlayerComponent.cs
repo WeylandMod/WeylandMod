@@ -5,16 +5,16 @@ using MonoMod.Cil;
 using UnityEngine;
 using WeylandMod.Core;
 
-namespace WeylandMod.Features.PrecisePlacement
+namespace WeylandMod.Features.PreciseRotation
 {
     internal class PlayerComponent : IFeatureComponent
     {
         private readonly ManualLogSource _logger;
-        private readonly PrecisePlacementConfig _config;
+        private readonly PreciseRotationConfig _config;
 
         private float _rotationAngle = 0.0f;
 
-        public PlayerComponent(ManualLogSource logger, PrecisePlacementConfig config)
+        public PlayerComponent(ManualLogSource logger, PreciseRotationConfig config)
         {
             _logger = logger;
             _config = config;

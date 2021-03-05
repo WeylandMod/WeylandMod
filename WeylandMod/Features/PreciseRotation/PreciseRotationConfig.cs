@@ -2,9 +2,9 @@
 using UnityEngine;
 using WeylandMod.Core;
 
-namespace WeylandMod.Features.PrecisePlacement
+namespace WeylandMod.Features.PreciseRotation
 {
-    internal class PrecisePlacementConfig : IFeatureConfig
+    internal class PreciseRotationConfig : IFeatureConfig
     {
         private const int Version = 1;
 
@@ -20,7 +20,7 @@ namespace WeylandMod.Features.PrecisePlacement
         public float DefaultAngle { get; private set; }
         public float PrecisionAngle { get; private set; }
 
-        public PrecisePlacementConfig(string name, ConfigFile config)
+        public PreciseRotationConfig(string name, ConfigFile config)
         {
             _enabled = config.Bind(
                 name,

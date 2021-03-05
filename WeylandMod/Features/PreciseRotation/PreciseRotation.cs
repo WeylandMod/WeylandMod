@@ -2,19 +2,19 @@
 using BepInEx.Logging;
 using WeylandMod.Core;
 
-namespace WeylandMod.Features.PrecisePlacement
+namespace WeylandMod.Features.PreciseRotation
 {
-    internal class PrecisePlacement : IFeature
+    internal class PreciseRotation : IFeature
     {
-        public string Name => nameof(PrecisePlacement);
+        public string Name => nameof(PreciseRotation);
 
         public IFeatureConfig Config { get; }
 
         public IFeatureComponent[] Components { get; }
 
-        public PrecisePlacement(ManualLogSource logger, ConfigFile config)
+        public PreciseRotation(ManualLogSource logger, ConfigFile config)
         {
-            var featureConfig = new PrecisePlacementConfig(Name, config);
+            var featureConfig = new PreciseRotationConfig(Name, config);
 
             Config = featureConfig;
             Components = new IFeatureComponent[]
