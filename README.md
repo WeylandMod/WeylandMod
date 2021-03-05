@@ -4,7 +4,7 @@
 
 WeylandMod is a [Valheim](https://www.valheimgame.com/) quality of life mods collection, like server shared map, shared pins, managable death pins and extended storage.
 
-WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and relies on [BiPinEx](https://github.com/BepInEx/BepInEx) for mod loading.
+WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and relies on [BepInEx](https://github.com/BepInEx/BepInEx) for mod loading.
 
 ## Issues
 
