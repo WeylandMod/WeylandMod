@@ -1,11 +1,9 @@
-﻿using BepInEx.Configuration;
-
-namespace WeylandMod.Core
+﻿namespace WeylandMod.Core
 {
     internal interface IFeature
     {
-        ConfigEntry<bool> Enabled { get; }
-
+        string Name { get; }
+        IFeatureConfig Config { get; }
         IFeatureComponent[] Components { get; }
     }
 }

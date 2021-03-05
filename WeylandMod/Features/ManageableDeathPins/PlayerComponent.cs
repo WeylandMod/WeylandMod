@@ -5,22 +5,31 @@ namespace WeylandMod.Features.ManageableDeathPins
 {
     internal class PlayerComponent : IFeatureComponent
     {
-        private ManualLogSource Logger { get; }
+        private readonly ManualLogSource _logger;
 
         public PlayerComponent(ManualLogSource logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
-        public void Initialize()
+        public void OnLaunch(bool enabled)
         {
+            if (!enabled)
+                return;
+
             On.Player.OnDeath += OnDeathHook;
         }
 
-        private void OnDeathHook(On.Player.orig_OnDeath orig, Player self)
+        public void OnConnect()
         {
-            Logger.LogDebug($"{nameof(ManageableDeathPins)}.{nameof(PlayerComponent)}.OnDeath");
+        }
 
+        public void OnDisconnect()
+        {
+        }
+
+        private static void OnDeathHook(On.Player.orig_OnDeath orig, Player self)
+        {
             orig(self);
 
             Minimap.instance.AddPin(self.transform.position, Minimap.PinType.Death, "", true, false);

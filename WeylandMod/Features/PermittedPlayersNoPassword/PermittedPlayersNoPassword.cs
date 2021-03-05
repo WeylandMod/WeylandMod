@@ -6,19 +6,15 @@ namespace WeylandMod.Features.PermittedPlayersNoPassword
 {
     internal sealed class PermittedPlayersNoPassword : IFeature
     {
-        public ConfigEntry<bool> Enabled { get; }
+        public string Name => nameof(PermittedPlayersNoPassword);
+
+        public IFeatureConfig Config { get; }
 
         public IFeatureComponent[] Components { get; }
 
         public PermittedPlayersNoPassword(ManualLogSource logger, ConfigFile config)
         {
-            Enabled = config.Bind(
-                nameof(PermittedPlayersNoPassword),
-                nameof(Enabled),
-                true,
-                "Allow players in permittedlist.txt to log in to server without password."
-            );
-
+            Config = new PermittedPlayersNoPasswordConfig(Name, config);
             Components = new IFeatureComponent[]
             {
                 new ZNetComponent(logger),

@@ -8,26 +8,35 @@ namespace WeylandMod.Features.PermittedPlayersNoPassword
 {
     internal class ZNetComponent : IFeatureComponent
     {
-        private ManualLogSource Logger { get; }
+        private readonly ManualLogSource _logger;
 
         public ZNetComponent(ManualLogSource logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
-        public void Initialize()
+        public void OnLaunch(bool enabled)
         {
+            if (!enabled)
+                return;
+
             On.ZNet.IsAllowed += IsAllowedHook;
             On.ZNet.CheckWhiteList += CheckWhiteListHook;
 
-            IL.ZNet.RPC_ServerHandshake += RPC_ServerHandshakeHook;
-            IL.ZNet.RPC_PeerInfo += RPC_PeerInfoHook;
+            IL.ZNet.RPC_ServerHandshake += RPC_ServerHandshakePatch;
+            IL.ZNet.RPC_PeerInfo += RPC_PeerInfoPatch;
         }
 
-        private bool IsAllowedHook(On.ZNet.orig_IsAllowed orig, ZNet self, string hostName, string playerName)
+        public void OnConnect()
         {
-            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}.{nameof(ZNetComponent)}.IsAllowed {hostName} {playerName}");
+        }
 
+        public void OnDisconnect()
+        {
+        }
+
+        private static bool IsAllowedHook(On.ZNet.orig_IsAllowed orig, ZNet self, string hostName, string playerName)
+        {
             var clientBanned = self.m_bannedList.Contains(hostName) || self.m_bannedList.Contains(playerName);
             var clientPermitted = self.m_permittedList.Count() <= 0 || self.m_permittedList.Contains(hostName);
 
@@ -42,10 +51,8 @@ namespace WeylandMod.Features.PermittedPlayersNoPassword
             orig(self);
         }
 
-        private void RPC_ServerHandshakeHook(ILContext il)
+        private static void RPC_ServerHandshakePatch(ILContext il)
         {
-            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}.{nameof(ZNetComponent)}.RPC_ServerHandshake");
-
             new ILCursor(il)
                 // find server password check
                 .GotoNext(
@@ -65,10 +72,8 @@ namespace WeylandMod.Features.PermittedPlayersNoPassword
                 );
         }
 
-        private void RPC_PeerInfoHook(ILContext il)
+        private static void RPC_PeerInfoPatch(ILContext il)
         {
-            Logger.LogDebug($"{nameof(PermittedPlayersNoPassword)}.{nameof(ZNetComponent)}.RPC_PeerInfo");
-
             ILLabel successLabel = null;
             new ILCursor(il)
                 // find original player password check, save jump label and move after

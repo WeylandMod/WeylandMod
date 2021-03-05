@@ -6,19 +6,15 @@ namespace WeylandMod.Features.NoServerPassword
 {
     internal sealed class NoServerPassword : IFeature
     {
-        public ConfigEntry<bool> Enabled { get; }
+        public string Name => nameof(NoServerPassword);
+
+        public IFeatureConfig Config { get; }
 
         public IFeatureComponent[] Components { get; }
 
         public NoServerPassword(ManualLogSource logger, ConfigFile config)
         {
-            Enabled = config.Bind(
-                nameof(NoServerPassword),
-                nameof(Enabled),
-                true,
-                "Let you launch public server without password."
-            );
-
+            Config = new NoServerPasswordConfig(Name, config);
             Components = new IFeatureComponent[]
             {
                 new FejdStartupComponent(logger),

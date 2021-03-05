@@ -5,23 +5,31 @@ namespace WeylandMod.Features.SharedMap
 {
     internal class WorldComponent : IFeatureComponent
     {
-        private ManualLogSource Logger { get; }
+        private readonly ManualLogSource _logger;
 
         public WorldComponent(ManualLogSource logger)
         {
-            Logger = logger;
             WorldExt.Logger = logger;
+
+            _logger = logger;
         }
 
-        public void Initialize()
+        public void OnLaunch(bool enabled)
+        {
+        }
+
+        public void OnConnect()
         {
             On.World.SaveWorldMetaData += SaveWorldMetaDataHook;
         }
 
-        private void SaveWorldMetaDataHook(On.World.orig_SaveWorldMetaData orig, World self)
+        public void OnDisconnect()
         {
-            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(WorldComponent)}.SaveWorldMetaData");
+            On.World.SaveWorldMetaData -= SaveWorldMetaDataHook;
+        }
 
+        private static void SaveWorldMetaDataHook(On.World.orig_SaveWorldMetaData orig, World self)
+        {
             orig(self);
 
             self.SaveSharedMap();

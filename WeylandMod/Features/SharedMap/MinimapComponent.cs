@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using BepInEx.Configuration;
+using System.Linq;
 using BepInEx.Logging;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -14,70 +14,76 @@ namespace WeylandMod.Features.SharedMap
 {
     internal class MinimapComponent : IFeatureComponent
     {
-        private ManualLogSource Logger { get; }
-
-        private ConfigEntry<bool> SharedPins { get; }
-        private ConfigEntry<Color> SharedPinsColor { get; }
-
-        private List<ZNet.PlayerInfo> _playersInfo;
+        private readonly ManualLogSource _logger;
+        private readonly SharedMapConfig _config;
+        private readonly List<ZNet.PlayerInfo> _playersInfo;
         private float _exploreTimer;
         private GameObject _customPinPrefab;
 
-        public MinimapComponent(ManualLogSource logger, ConfigFile config)
+        public MinimapComponent(ManualLogSource logger, SharedMapConfig config)
         {
-            Logger = logger;
             MinimapExt.Logger = logger;
 
-            SharedPins = config.Bind(
-                nameof(SharedMap),
-                nameof(SharedPins),
-                true,
-                "Shared custom player pins."
-            );
+            _logger = logger;
+            _config = config;
 
-            SharedPinsColor = config.Bind(
-                nameof(SharedMap),
-                nameof(SharedPinsColor),
-                new Color(0.7f, 0.7f, 1.0f),
-                "Color for pins shared by other players."
-            );
-        }
-
-        public void Initialize()
-        {
             _playersInfo = new List<ZNet.PlayerInfo>();
             _exploreTimer = 0.0f;
             _customPinPrefab = null;
+        }
 
+        public void OnLaunch(bool enabled)
+        {
             On.Minimap.Start += StartHook;
+        }
+
+        public void OnConnect()
+        {
             On.Minimap.Update += UpdateHook;
 
-            if (SharedPins.Value)
+            if (_config.SharedPins)
             {
                 On.Minimap.AddPin += AddPinHook;
                 On.Minimap.RemovePin_PinData += RemovePinHook;
                 On.Minimap.UpdateNameInput += UpdateNameInputHook;
 
-                IL.Minimap.UpdatePins += UpdatePinsHook;
+                IL.Minimap.UpdatePins += UpdatePinsPatch;
+            }
+        }
+
+        public void OnDisconnect()
+        {
+            On.Minimap.Update -= UpdateHook;
+
+            if (_config.SharedPins)
+            {
+                On.Minimap.AddPin -= AddPinHook;
+                On.Minimap.RemovePin_PinData -= RemovePinHook;
+                On.Minimap.UpdateNameInput -= UpdateNameInputHook;
+
+                IL.Minimap.UpdatePins -= UpdatePinsPatch;
             }
         }
 
         private void StartHook(On.Minimap.orig_Start orig, Minimap self)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.Start Server={ZNet.m_isServer}");
+            _logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.Start IsServer={ZNet.m_isServer}");
 
             orig(self);
 
-            if (SharedPins.Value)
+            if (_config.Enabled && ZNet.m_isServer)
+            {
+                ZNet.m_world.LoadSharedMap();
+            }
+
+            if (!ZNet.m_isServer)
             {
                 _customPinPrefab = Object.Instantiate(self.m_pinPrefab);
                 var pinImage = _customPinPrefab.GetComponent<Image>();
 
                 pinImage.material = new Material(pinImage.material);
-                pinImage.color = SharedPinsColor.Value;
+                pinImage.color = _config.SharedPinsColor;
             }
-
-            ZNet.m_world.LoadSharedMap();
 
             ZRoutedRpc.instance.Register<ZPackage>(
                 WeylandRpc.GetName("SharedMapUpdate"),
@@ -113,7 +119,7 @@ namespace WeylandMod.Features.SharedMap
             _playersInfo.Clear();
             ZNet.instance.GetOtherPublicPlayers(_playersInfo);
 
-            foreach (var playerInfo in _playersInfo)
+            foreach (var playerInfo in _playersInfo.Where(playerInfo => playerInfo.m_publicPosition))
             {
                 self.Explore(playerInfo.m_position, self.m_exploreRadius);
             }
@@ -123,8 +129,8 @@ namespace WeylandMod.Features.SharedMap
             On.Minimap.orig_AddPin orig, Minimap self, Vector3 pos, Minimap.PinType type,
             string name, bool save, bool isChecked)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.AddPin " +
-                            $"Pos={pos} Type={type} Name={name} Save={save} Checked={isChecked}");
+            _logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.AddPin " +
+                             $"Pos={pos} Type={type} Name={name} Save={save} Checked={isChecked}");
 
             var pin = orig(self, pos, type, name, save, isChecked);
 
@@ -142,8 +148,8 @@ namespace WeylandMod.Features.SharedMap
 
         private void RemovePinHook(On.Minimap.orig_RemovePin_PinData orig, Minimap self, Minimap.PinData pin)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.RemovePin " +
-                            $"Pos={pin.m_pos} Type={pin.m_type} Name={pin.m_name}");
+            _logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.RemovePin " +
+                             $"Pos={pin.m_pos} Type={pin.m_type} Name={pin.m_name}");
 
             orig(self, pin);
 
@@ -167,8 +173,8 @@ namespace WeylandMod.Features.SharedMap
             if (pin == null || oldName == pin.m_name)
                 return;
 
-            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.UpdateNameInput " +
-                            $"Pos={pin.m_pos} Type={pin.m_type} Name={pin.m_name}");
+            _logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.UpdateNameInput " +
+                             $"Pos={pin.m_pos} Type={pin.m_type} Name={pin.m_name}");
 
             var pkg = new ZPackage();
             pkg.Write(0); // version
@@ -177,9 +183,9 @@ namespace WeylandMod.Features.SharedMap
             ZRoutedRpc.instance.InvokeRoutedRPC(WeylandRpc.GetName("SharedPinNameUpdate"), pkg);
         }
 
-        private void UpdatePinsHook(ILContext il)
+        private void UpdatePinsPatch(ILContext il)
         {
-            Logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.UpdatePins");
+            _logger.LogDebug($"{nameof(SharedMap)}.{nameof(MinimapComponent)}.UpdatePins");
 
             new ILCursor(il).GotoNext(x => x.MatchLdfld<Minimap>("m_pinPrefab"))
                 .Remove()
