@@ -37,7 +37,7 @@
       <HintPath>..\Dependencies\BepInEx\Mono.Cecil.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="MonoMod.Utils, Version=20.11.26.2, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="MonoMod.Utils, Version=21.1.11.1, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Dependencies\BepInEx\MonoMod.Utils.dll</HintPath>
       <Private>false</Private>
     </Reference>

@@ -15,6 +15,7 @@ Report any WeylandMod issues [on GitHub](https://github.com/WeylandMod/WeylandMo
 * [Features](#features)
 * [Roadmap](#roadmap)
 * [Installation](#installation)
+* [Known Issues](#known-issues)
 * [Building](#building)
 
 ## Features
@@ -84,7 +85,12 @@ Tou can use [r2modman](https://valheim.thunderstore.io/package/ebkr/r2modman/) m
 
 Alternatively you can download appropriate archive with pre-built binaries from [releases section](https://github.com/WeylandMod/WeylandMod/releases), unpack it into Valheim installation directory and you ready to go.
 
-**On Linux you need to install libc6-dev for BepInEx to work!**
+## Known Issues
+
+Linux:
+
+* You need to install libc6-dev for BepInEx to work.
+* BepInEx versions 5.4.6.0-5.4.8.0 use UnityDoorstop.Unix 1.5.0.0 which fails to start due to a bug, you should export `DOORSTOP_CORLIB_OVERRIDE_PATH` environment variable pointing to `Managed` directory of Valheim in order to fix this.
 
 ## Building
 
