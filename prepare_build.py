@@ -33,6 +33,7 @@ valheim_files = [
 unity_files = [
     "UnityEngine.dll",
     "UnityEngine.CoreModule.dll",
+    "UnityEngine.InputLegacyModule.dll",
 ]
 
 unity_valheim_files = [

@@ -10,6 +10,7 @@ using WeylandMod.Features.ExtendedStorage;
 using WeylandMod.Features.ManageableDeathPins;
 using WeylandMod.Features.NoServerPassword;
 using WeylandMod.Features.PermittedPlayersNoPassword;
+using WeylandMod.Features.PrecisePlacement;
 using WeylandMod.Features.SharedMap;
 using WeylandMod.Utils;
 
@@ -30,6 +31,7 @@ namespace WeylandMod
                 new SharedMap(logger, config),
                 new ExtendedStorage(logger, config),
                 new ManageableDeathPins(logger, config),
+                new PrecisePlacement(logger, config)
             }.ToDictionary(feature => feature.Name);
 
             IL.ZNet.RPC_ServerHandshake += RPC_ServerHandshakePatch;
