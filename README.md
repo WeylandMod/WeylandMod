@@ -42,11 +42,11 @@ Implemented features:
 * Server-side explored map shared bewtween all players.
 * Server-side shared players pins.
 * Forced players public positions.
+* Keep explored map and shared pins on server between restarts.
 
 Planned features:
 
 * Share known bosses across all players on server.
-* Keep explored map on server between restarts.
 
 ### Extended Storage
 
