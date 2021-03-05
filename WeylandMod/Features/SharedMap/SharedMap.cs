@@ -14,13 +14,15 @@ namespace WeylandMod.Features.SharedMap
 
         public SharedMap(ManualLogSource logger, ConfigFile config)
         {
-            Config = new SharedMapConfig(Name, config);
+            var featureConfig = new SharedMapConfig(Name, config);
+
+            Config = featureConfig;
             Components = new IFeatureComponent[]
             {
                 new ZNetComponent(logger),
                 new GameComponent(logger),
                 new WorldComponent(logger),
-                new MinimapComponent(logger, Config as SharedMapConfig),
+                new MinimapComponent(logger, featureConfig),
             };
         }
     }

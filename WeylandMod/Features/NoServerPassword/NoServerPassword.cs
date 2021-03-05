@@ -14,10 +14,13 @@ namespace WeylandMod.Features.NoServerPassword
 
         public NoServerPassword(ManualLogSource logger, ConfigFile config)
         {
-            Config = new NoServerPasswordConfig(Name, config);
+            var featureConfig = new NoServerPasswordConfig(Name, config);
+
+            Config = featureConfig;
             Components = new IFeatureComponent[]
             {
                 new FejdStartupComponent(logger),
+                new ZSteamMatchmakingComponent(logger, featureConfig),
             };
         }
     }

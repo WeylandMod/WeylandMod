@@ -35,7 +35,6 @@ namespace WeylandMod
             }.ToDictionary(feature => feature.Name);
 
             IL.ZNet.RPC_ServerHandshake += RPC_ServerHandshakePatch;
-            // IL.ZNet.OnNewConnection += OnNewConnectionPatch;
 
             On.ZNet.OnNewConnection += OnNewConnectionHook;
             On.ZNet.Awake += AwakeHook;
