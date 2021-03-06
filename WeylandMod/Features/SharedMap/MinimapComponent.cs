@@ -76,14 +76,11 @@ namespace WeylandMod.Features.SharedMap
                 ZNet.m_world.LoadSharedMap();
             }
 
-            if (!ZNet.m_isServer)
-            {
-                _customPinPrefab = Object.Instantiate(self.m_pinPrefab);
-                var pinImage = _customPinPrefab.GetComponent<Image>();
+            _customPinPrefab = Object.Instantiate(self.m_pinPrefab);
+            var pinImage = _customPinPrefab.GetComponent<Image>();
 
-                pinImage.material = new Material(pinImage.material);
-                pinImage.color = _config.SharedPinsColor;
-            }
+            pinImage.material = new Material(pinImage.material);
+            pinImage.color = _config.SharedPinsColor;
 
             ZRoutedRpc.instance.Register<ZPackage>(
                 WeylandRpc.GetName("SharedMapUpdate"),
