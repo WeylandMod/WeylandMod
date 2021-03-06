@@ -28,6 +28,7 @@ Feature | Description | Server | Client | Config section
 :------ | :------ | :----: | :----: | :-------------
 [Shared Map](#shared-map) | Shared map exploration and custom pins between all players on server. | ✓ | ✓ | `[SharedMap]`
 [Extended Storage](#extended-storage) | Extends size of every game container. | ✓ | ✓ | `[ExtendedStorage]`
+[Item Radar](#item-radar) | Show you selected items icons on minimap. | | ✓ | `[ExtendedStorage]`
 [Managable Death Pins](#managable-death-pins) | All deaths are marked and player can remove death pins. | | ✓ | `[ManageableDeathPins]`
 [Precise Rotation](#precise-rotation) | Rotate objects by custom angle while building. | | ✓ | `[PreciseRotation]`
 [No Server Password](#no-server-password) | Launch public server without password. | ✓ | | `[NoServerPassword]`
@@ -51,6 +52,10 @@ Planned features:
 ### Extended Storage
 
 Adds slots to every available container in game (cheats, boats, wagon).
+
+### Item Radar
+
+Allow you to configure some kind of "radar" to show selected items icons on minimap in specific radius.
 
 ### Managable Death Pins
 
