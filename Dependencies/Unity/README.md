@@ -4,3 +4,4 @@
 * `UnityEngine.CoreModule.dll`
 * `UnityEngine.UI.dll`
 * `UnityEngine.InputLegacyModule.dll`
+* `UnityEngine.AssetBundleModule.dll`

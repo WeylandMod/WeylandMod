@@ -45,6 +45,10 @@
       <HintPath>..\Dependencies\Unity\UnityEngine.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Dependencies\Unity\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\Dependencies\Unity\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
