@@ -7,9 +7,9 @@
     <Description>WeylandMod is a Valheim quality of life mods collection, like server shared map, shared pins, managable death pins and extended storage.</Description>
     <PackageProjectUrl>https://github.com/WeylandMod/WeylandMod</PackageProjectUrl>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Version>0.1.5</Version>
+    <Version>0.3.0</Version>
     <Title>WeylandMod</Title>
-    <PackageVersion>0.2.0</PackageVersion>
+    <PackageVersion>0.3.0</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

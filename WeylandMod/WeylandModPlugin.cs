@@ -2,7 +2,7 @@
 
 namespace WeylandMod
 {
-    [BepInPlugin("io.github.WeylandMod", "WeylandMod", "0.2.0")]
+    [BepInPlugin("io.github.WeylandMod", "WeylandMod", "0.3.0")]
     internal class WeylandModPlugin : BaseUnityPlugin
     {
         public void Awake()
