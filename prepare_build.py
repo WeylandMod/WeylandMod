@@ -28,6 +28,7 @@ valheim_files = [
     "assembly_valheim.dll",
     "assembly_utils.dll",
     "assembly_guiutils.dll",
+    "assembly_steamworks.dll",
 ]
 
 unity_files = [
