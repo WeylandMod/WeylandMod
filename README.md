@@ -2,7 +2,7 @@
 
 ---
 
-WeylandMod is a [Valheim](https://www.valheimgame.com/) quality of life mods collection, like server shared map, shared pins, managable death pins and extended storage.
+WeylandMod is a [Valheim](https://www.valheimgame.com/) QoL mods collection, like shared map exploration, shared pins, item radar and extended storage.
 
 WeylandMod uses [MonoMod](https://github.com/MonoMod/MonoMod) framwework, and relies on [BepInEx](https://github.com/BepInEx/BepInEx) for mod loading.
 
@@ -20,19 +20,20 @@ Report any WeylandMod issues [on GitHub](https://github.com/WeylandMod/WeylandMo
 
 ## Features
 
-All features is configurable through config file `io.github.WeylandMod.cfg` inside BepInEx `config` directory.
+All features are divided into different assemblies `WeylandMod.[FeatureName].dll` and configurable through corresponding config files `WeylandMod.[FeatureName].cfg` inside BepInEx `config` directory. Only `WeylandMod.Core` is mandatory, any other feature can be removed completely.
 
-Different mod features demands installation on server, client or both in order to work properly, you can check requirements in the table below. The mod syncs client configuration with server configuration on connect, server side configuration has priority over client-server features, but client-only features are unaffected.
+Different features demands installation on server, client or both in order to work properly, you can check requirements in the table below. The mod syncs client configuration with server configuration on connect, server side configuration has priority over client-server features, but client-only features are unaffected.
 
-Feature | Description | Server | Client | Config section
-:------ | :------ | :----: | :----: | :-------------
-[Shared Map](#shared-map) | Shared map exploration and custom pins between all players on server. | ✓ | ✓ | `[SharedMap]`
-[Extended Storage](#extended-storage) | Extends size of every game container. | ✓ | ✓ | `[ExtendedStorage]`
-[Item Radar](#item-radar) | Show you selected items icons on minimap. | | ✓ | `[ExtendedStorage]`
-[Managable Death Pins](#managable-death-pins) | All deaths are marked and player can remove death pins. | | ✓ | `[ManageableDeathPins]`
-[Precise Rotation](#precise-rotation) | Rotate objects by custom angle while building. | | ✓ | `[PreciseRotation]`
-[No Server Password](#no-server-password) | Launch public server without password. | ✓ | | `[NoServerPassword]`
-[Permitted Players No Password](#no-server-password) | Permitted players can join server without password. | ✓ | | `[PermittedPlayersNoPassword]`
+By default WeylandMod changes game version string to deny connections from clients without WeylandMod installed, you can disable this in `WeylandMod.Core.cfg` configuration file.
+
+Feature | Description | Server | Client
+:------ | :------ | :----: | :----:
+[Shared Map](#shared-map) | Shared map exploration and custom pins between all players on server. | ✓ | ✓
+[Extended Storage](#extended-storage) | Extends size of every game container. | ✓ | ✓
+[Extended Server Password](#extended-server-password) | Launch server with no password and permitted players can join server without password. | ✓ | 
+[Item Radar](#item-radar) | Display icons for specific items on minimap. | | ✓ | `[ExtendedStorage]`
+[Extended Death Pins](#extended-death-pins) | All deaths are marked and player can remove death pins. | | ✓
+[Precise Rotation](#precise-rotation) | Rotate objects by custom angle while building. | | ✓
 
 ### Shared Map
 
@@ -45,19 +46,23 @@ Implemented features:
 * Forced players public positions.
 * Keep explored map and shared pins on server between restarts.
 
-Planned features:
-
-* Share known bosses across all players on server.
-
 ### Extended Storage
 
 Adds slots to every available container in game (cheats, boats, wagon).
 
+### Extended Server Password
+
+Implemented features:
+
+* Let you start public server without password.
+* Allow to log in to server without password if user is listed in permittedlist.txt.
+* Allow to remove Steam password request on connection through `Steam > View > Servers > Favourite` (note if you enable this option your server will be listed as server without password on Community Servers tab in the game).
+
 ### Item Radar
 
-Allow you to configure some kind of "radar" to show selected items icons on minimap in specific radius.
+Allow you to enable some kind of "radar" to display icons for configured items on minimap in specific radius. You can look into [ObjectDB-Table](https://github.com/Valheim-Modding/Wiki/wiki/ObjectDB-Table) (column `Prefab Name`) for specific item names.
 
-### Managable Death Pins
+### Extended Death Pins
 
 All you death positions (not only last one) are now presented on map and you can remove any death marker by right-clicking on it.
 
@@ -65,19 +70,9 @@ All you death positions (not only last one) are now presented on map and you can
 
 Let you configure the arbitrary rotation angles for placeable objects in build mode. Precision rotation mode activated by holding down configurable key (LCtrl by default). Server can force clients to disable this feature or configure custom rotation angles.
 
-### No Server Password
-
-Implemented features:
-
-* Let you start public server without password.
-* Allow to log in to server without password if user listed in permittedlist.txt on server.
-* Allow to remove Steam password request on connection through `Steam > View > Servers > Favourite`.
-  * Note: if you enable this option your server will be listed as server without password (no key icon) on Community Servers tab in the game.
-
 ## Roadmap
 
 * Current features improvements, especially Shared Map.
-* Mod version check on connection.
 * User-friendly installer for Windows platform.
 * Keep favorite server list.
 * Private (hidden) servers.
@@ -111,4 +106,4 @@ Alternative to Valheim paid copy you can use [Valheim Dedicated Server](https://
 
 Once you've done this use Python script `prepare_build.py` (see `--help`), it will prepare working copy for build process.
 
-After this you can use either .NET CLI or Microsoft Visual Studio 2019 to build mod binaries.
+After this you can use either .NET CLI or your favorite IDE to build mod binaries.
