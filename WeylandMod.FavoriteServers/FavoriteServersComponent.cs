@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BepInEx.Logging;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,6 +24,7 @@ namespace WeylandMod.FavoriteServers
         private Button _connectButton;
         private Button _addButton;
         private Button _removeButton;
+        private Button _addToFavoritesButton;
 
         private GameObject _addDialog;
         private GameObject _removeDialog;
@@ -41,7 +43,8 @@ namespace WeylandMod.FavoriteServers
 
         private void Start()
         {
-            AddFavoritesTab();
+            CreateFavoritesTab();
+            CreateAddToFavoritesButton();
 
             _addDialog = CreateAddDialog();
             _removeDialog = CreateRemoveDialog();
@@ -61,6 +64,18 @@ namespace WeylandMod.FavoriteServers
             _removeButton.gameObject.SetActive(true);
             _removeButton.onClick = new Button.ButtonClickedEvent();
             _removeButton.onClick.AddListener(OnRemoveButtonClick);
+
+            _addToFavoritesButton.gameObject.SetActive(true);
+            _addToFavoritesButton.onClick = new Button.ButtonClickedEvent();
+            _addToFavoritesButton.onClick.AddListener(OnAddToFavoritesButtonClick);
+        }
+
+        private void Update()
+        {
+            _refreshButton.interactable = _steamService.IsFavoriteServersRefreshAvailable;
+            _connectButton.interactable = _selectedServerIndex != -1;
+            _removeButton.interactable = _selectedServerIndex != -1;
+            _addToFavoritesButton.interactable = FejdStartup.instance.m_joinServer != null;
         }
 
         private void OnFavoriteServersUpdated(List<ServerData> servers)
@@ -96,10 +111,6 @@ namespace WeylandMod.FavoriteServers
                 element.SetActive(true);
                 _serverObjectList.Add(element);
             }
-
-            _removeButton.interactable = _selectedServerIndex != -1;
-
-            _refreshButton.interactable = true;
         }
 
         public void OnServerSelected()
@@ -122,8 +133,6 @@ namespace WeylandMod.FavoriteServers
                     serverTransform.gameObject.SetActive(false);
                 }
             }
-
-            _removeButton.interactable = _selectedServerIndex != -1;
         }
 
         private void OnRefreshButtonClick()
@@ -133,7 +142,6 @@ namespace WeylandMod.FavoriteServers
 
             _logger.LogDebug("OnRefreshButtonClick");
 
-            _refreshButton.interactable = false;
             _steamService.RequestFavoriteServers();
         }
 
@@ -159,7 +167,7 @@ namespace WeylandMod.FavoriteServers
             FejdStartup.instance.TransitionToMainScene();
         }
 
-        public void OnAddButtonClick()
+        private void OnAddButtonClick()
         {
             _logger.LogDebug("OnAddButtonClick");
 
@@ -170,7 +178,7 @@ namespace WeylandMod.FavoriteServers
             inputField.ActivateInputField();
         }
 
-        public void OnRemoveButtonClick()
+        private void OnRemoveButtonClick()
         {
             if (_selectedServerIndex == -1)
                 return;
@@ -182,7 +190,20 @@ namespace WeylandMod.FavoriteServers
             _removeDialog.SetActive(true);
         }
 
-        private void AddFavoritesTab()
+        private void OnAddToFavoritesButtonClick()
+        {
+            var serverData = FejdStartup.instance.m_joinServer;
+            if (serverData == null)
+                return;
+
+            serverData.m_steamHostAddr.ToString(out var address, true);
+            _logger.LogDebug($"OnAddToFavoritesButtonClick Host={address}");
+
+            SteamService.AddFavoriteServer(serverData);
+            OnRefreshButtonClick();
+        }
+
+        private void CreateFavoritesTab()
         {
             var startGamePanel = gameObject.transform.Find("StartGame/Panel");
             var tabHandler = startGamePanel.GetComponentInChildren<TabHandler>();
@@ -197,7 +218,7 @@ namespace WeylandMod.FavoriteServers
                 new Vector2(482.0f, -33.1f)
             );
 
-            var favoritesPanel = AddFavoritesPanel(startGamePanel);
+            var favoritesPanel = CreateFavoritesPanel(startGamePanel);
 
             tabHandler.m_tabs.Add(new TabHandler.Tab
             {
@@ -208,7 +229,7 @@ namespace WeylandMod.FavoriteServers
             });
         }
 
-        private Transform AddFavoritesPanel(Transform startGamePanel)
+        private Transform CreateFavoritesPanel(Transform startGamePanel)
         {
             var joinPanel = startGamePanel.Find("JoinPanel");
 
@@ -258,6 +279,19 @@ namespace WeylandMod.FavoriteServers
             );
 
             return favoritesPanel;
+        }
+
+        private void CreateAddToFavoritesButton()
+        {
+            var joinButton = gameObject.transform.Find("StartGame/Panel/JoinPanel/Join manually");
+            var rectTransform = joinButton.GetComponent<RectTransform>();
+
+            _addToFavoritesButton = CloneButton(
+                joinButton.GetComponent<Button>(),
+                "Add to favorites",
+                rectTransform.sizeDelta,
+                new Vector2(191.0f, -165.0f)
+            );
         }
 
         private GameObject CreateAddDialog()
