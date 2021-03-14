@@ -30,8 +30,9 @@ Feature | Description | Server | Client
 :------ | :------ | :----: | :----:
 [Shared Map](#shared-map) | Shared map exploration and custom pins between all players on server. | ✓ | ✓
 [Extended Storage](#extended-storage) | Extends size of every game container. | ✓ | ✓
-[Extended Server Password](#extended-server-password) | Launch server with no password and permitted players can join server without password. | ✓ | 
-[Item Radar](#item-radar) | Display icons for specific items on minimap. | | ✓ | `[ExtendedStorage]`
+[Extended Server Password](#extended-server-password) | Launch server with no password and permitted players can join server without password. | ✓ |
+[Favorite Servers](#favorite-servers) | Adds Favorite Servers tab to game. | | ✓
+[Item Radar](#item-radar) | Display icons for specific items on minimap. | | ✓
 [Extended Death Pins](#extended-death-pins) | All deaths are marked and player can remove death pins. | | ✓
 [Precise Rotation](#precise-rotation) | Rotate objects by custom angle while building. | | ✓
 
@@ -58,6 +59,16 @@ Implemented features:
 * Allow to log in to server without password if user is listed in permittedlist.txt.
 * Allow to remove Steam password request on connection through `Steam > View > Servers > Favourite` (note if you enable this option your server will be listed as server without password on Community Servers tab in the game).
 
+### Favorite Servers
+
+Adds favorite servers support over Steam API as a separate tab in start game menu.
+
+Implemented features:
+
+* List favorite servers.
+* Add and remove favorite servers.
+* Add selected server from Join tab to favorites. 
+
 ### Item Radar
 
 Allow you to enable some kind of "radar" to display icons for configured items on minimap in specific radius. You can look into [ObjectDB-Table](https://github.com/Valheim-Modding/Wiki/wiki/ObjectDB-Table) (column `Prefab Name`) for specific item names.
@@ -74,7 +85,6 @@ Let you configure the arbitrary rotation angles for placeable objects in build m
 
 * Current features improvements, especially Shared Map.
 * User-friendly installer for Windows platform.
-* Keep favorite server list.
 * Private (hidden) servers.
 
 ## Installation
