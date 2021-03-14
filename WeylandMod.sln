@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeylandMod.ItemRadar", "Wey
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeylandMod.SharedMap", "WeylandMod.SharedMap\WeylandMod.SharedMap.csproj", "{E71CB286-1AD4-4761-8202-84CC0B3B1075}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeylandMod.FavoriteServers", "WeylandMod.FavoriteServers\WeylandMod.FavoriteServers.csproj", "{DE627C92-2002-47D7-8F2A-8116643F1AA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,5 +116,17 @@ Global
 		{E71CB286-1AD4-4761-8202-84CC0B3B1075}.Release|x64.Build.0 = Release|Any CPU
 		{E71CB286-1AD4-4761-8202-84CC0B3B1075}.Release|x86.ActiveCfg = Release|Any CPU
 		{E71CB286-1AD4-4761-8202-84CC0B3B1075}.Release|x86.Build.0 = Release|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Debug|x64.Build.0 = Debug|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Debug|x86.Build.0 = Debug|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Release|x64.ActiveCfg = Release|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Release|x64.Build.0 = Release|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Release|x86.ActiveCfg = Release|Any CPU
+		{DE627C92-2002-47D7-8F2A-8116643F1AA5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
