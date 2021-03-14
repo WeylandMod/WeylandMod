@@ -40,12 +40,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="thunderstore.io\manifest.json" />
-        <Content Include="thunderstore.io\manifest.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <None Remove="thunderstore.io\icon.png" />
-        <Content Include="thunderstore.io\icon.png">
+        <None Remove="WeylandMod.Core.manifest.json"/>
+        <Content Include="WeylandMod.Core.manifest.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>

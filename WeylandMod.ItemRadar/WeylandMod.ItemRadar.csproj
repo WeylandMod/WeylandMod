@@ -44,4 +44,11 @@
         <ProjectReference Include="..\WeylandMod.Core\WeylandMod.Core.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="WeylandMod.ItemRadar.manifest.json"/>
+        <Content Include="WeylandMod.ItemRadar.manifest.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>

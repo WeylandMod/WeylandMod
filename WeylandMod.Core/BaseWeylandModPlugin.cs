@@ -2,7 +2,7 @@
 
 namespace WeylandMod.Core
 {
-    [BepInDependency("WeylandMod.Core", "0.1.0")]
+    [BepInDependency("WeylandMod.Core", "1.1.0")]
     public abstract class BaseWeylandModPlugin : BaseUnityPlugin
     {
         public void Awake()

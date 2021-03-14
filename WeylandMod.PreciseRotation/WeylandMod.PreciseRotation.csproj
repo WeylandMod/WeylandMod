@@ -44,4 +44,11 @@
         <ProjectReference Include="..\WeylandMod.Core\WeylandMod.Core.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="WeylandMod.PreciseRotation.manifest.json"/>
+        <Content Include="WeylandMod.PreciseRotation.manifest.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>

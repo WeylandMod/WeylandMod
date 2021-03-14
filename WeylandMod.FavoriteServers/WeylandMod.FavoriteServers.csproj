@@ -49,6 +49,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WeylandMod.Core\WeylandMod.Core.csproj" />
+        <ProjectReference Include="..\WeylandMod.Core\WeylandMod.Core.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="WeylandMod.FavoriteServers.manifest.json"/>
+        <Content Include="WeylandMod.FavoriteServers.manifest.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>

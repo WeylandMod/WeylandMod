@@ -48,4 +48,11 @@
         <ProjectReference Include="..\WeylandMod.Core\WeylandMod.Core.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="WeylandMod.SharedMap.manifest.json"/>
+        <Content Include="WeylandMod.SharedMap.manifest.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>

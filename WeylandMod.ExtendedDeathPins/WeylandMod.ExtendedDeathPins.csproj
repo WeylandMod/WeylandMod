@@ -32,4 +32,11 @@
         <ProjectReference Include="..\WeylandMod.Core\WeylandMod.Core.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="WeylandMod.ExtendedDeathPins.manifest.json"/>
+        <Content Include="WeylandMod.ExtendedDeathPins.manifest.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>

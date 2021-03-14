@@ -29,7 +29,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WeylandMod.Core\WeylandMod.Core.csproj"/>
+        <ProjectReference Include="..\WeylandMod.Core\WeylandMod.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="WeylandMod.ExtendedStorage.manifest.json"/>
+        <Content Include="WeylandMod.ExtendedStorage.manifest.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>
