@@ -26,7 +26,7 @@ namespace WeylandMod.SharedMap
             File.Move(newSharedMapPath, sharedMapPath);
         }
 
-        public static void LoadSharedMap(this World self)
+        public static void LoadSharedMap(this World self, bool isSharedPinsEnabled)
         {
             var sharedMapPath = self.GetSharedMapPath();
             if (!File.Exists(sharedMapPath))
@@ -36,7 +36,7 @@ namespace WeylandMod.SharedMap
 
             var sharedMapData = File.ReadAllBytes(sharedMapPath);
             var sharedMapPackage = new ZPackage(sharedMapData);
-            Minimap.instance.SetSharedMap(sharedMapPackage);
+            Minimap.instance.SetSharedMap(isSharedPinsEnabled, sharedMapPackage);
         }
 
         private static string GetSharedMapPath(this World self) =>

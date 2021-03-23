@@ -13,6 +13,7 @@ namespace WeylandMod.SharedMap
         private const string RpcSharedMapUpdateName = "RPC_WeylandMod_SharedMapUpdate";
         public const string RpcSharedPinAddName = "RPC_WeylandMod_SharedPinAdd";
         public const string RpcSharedPinRemoveName = "RPC_WeylandMod_SharedPinRemove";
+        public const string RpcSharedPinAdminRemoveName = "RPC_WeylandMod_SharedPinAdminRemove";
         public const string RpcSharedPinNameUpdateName = "RPC_WeylandMod_SharedPinNameUpdate";
 
         public GameObject SharedPinPrefab;
@@ -54,6 +55,11 @@ namespace WeylandMod.SharedMap
             ZRoutedRpc.instance.Register<ZPackage>(RpcSharedPinAddName, RPC_SharedPinAdd);
             ZRoutedRpc.instance.Register<ZPackage>(RpcSharedPinRemoveName, RPC_SharedPinRemove);
             ZRoutedRpc.instance.Register<ZPackage>(RpcSharedPinNameUpdateName, RPC_SharedPinNameUpdate);
+
+            if (!ZNet.m_isServer)
+                return;
+
+            ZRoutedRpc.instance.Register<ZPackage>(RpcSharedPinAdminRemoveName, RPC_SharedPinAdminRemove);
         }
 
         private void Update()
@@ -80,7 +86,7 @@ namespace WeylandMod.SharedMap
         {
             _logger.LogDebug($"RPC_SharedMapUpdate Size={pkg.Size()}");
 
-            _minimap.SetSharedMap(pkg);
+            _minimap.SetSharedMap(_config.SharedPins, pkg);
 
             if (!ZNet.m_isServer)
                 return;
@@ -90,6 +96,9 @@ namespace WeylandMod.SharedMap
 
         private void RPC_SharedPinAdd(long sender, ZPackage pkg)
         {
+            if (!_config.SharedPins)
+                return;
+
             _logger.LogDebug($"RPC_SharedPinAdd Size={pkg.Size()}");
 
             _minimap.SharedPinAdd(pkg);
@@ -104,6 +113,9 @@ namespace WeylandMod.SharedMap
 
         private void RPC_SharedPinRemove(long sender, ZPackage pkg)
         {
+            if (!_config.SharedPins)
+                return;
+
             _logger.LogDebug($"RPC_SharedPinRemove Size={pkg.Size()}");
 
             _minimap.SharedPinRemove(pkg);
@@ -116,8 +128,25 @@ namespace WeylandMod.SharedMap
             ZRoutedRpc.instance.OthersInvokeRoutedRPC(RpcSharedPinRemoveName, pkg);
         }
 
+        private void RPC_SharedPinAdminRemove(long sender, ZPackage pkg)
+        {
+            if (!_config.SharedPins)
+                return;
+
+            _logger.LogDebug($"RPC_SharedPinAdminRemove Size={pkg.Size()}");
+
+            var peer = ZRoutedRpc.instance.GetPeer(sender);
+            if (peer == null || !ZNet.instance.m_adminList.Contains(peer.m_rpc.m_socket.GetHostName()))
+                return;
+
+            RPC_SharedPinRemove(sender, pkg);
+        }
+
         private void RPC_SharedPinNameUpdate(long sender, ZPackage pkg)
         {
+            if (!_config.SharedPins)
+                return;
+
             _logger.LogDebug($"RPC_SharedPinNameUpdate Size={pkg.Size()}");
 
             _minimap.SharedPinNameUpdate(pkg);

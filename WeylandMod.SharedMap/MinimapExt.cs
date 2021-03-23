@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace WeylandMod.SharedMap
 {
@@ -7,10 +8,13 @@ namespace WeylandMod.SharedMap
         public static ZPackage GetSharedMap(this Minimap self) =>
             SharedMapData.Write(self, new ZPackage());
 
-        public static void SetSharedMap(this Minimap self, ZPackage pkg)
+        public static void SetSharedMap(this Minimap self, bool isSharedPinsEnabled, ZPackage pkg)
         {
             var mapData = SharedMapData.Read(pkg);
             self.ApplySharedMapExplored(mapData.Explored);
+
+            if (!isSharedPinsEnabled)
+                return;
 
             foreach (SharedPinData pinData in mapData.Pins)
             {
@@ -59,6 +63,30 @@ namespace WeylandMod.SharedMap
             closestPin.m_name = pinData.Name;
         }
 
+        public static Minimap.PinData GetClosestPinPredicate(this Minimap self, Vector3 pos, float radius, Predicate<Minimap.PinData> predicate)
+        {
+            Minimap.PinData closestPin = null;
+            var closestDist = 0.0f;
+
+            foreach (var pin in self.m_pins)
+            {
+                if (!predicate.Invoke(pin))
+                    continue;
+
+                var dist = Utils.DistanceXZ(pos, pin.m_pos);
+                if (dist <= radius && (closestPin == null || dist < closestDist))
+                {
+                    closestPin = pin;
+                    closestDist = dist;
+                }
+            }
+
+            return closestPin;
+        }
+
+        private static Minimap.PinData GetClosestPinWithType(this Minimap self, Vector3 pos, Minimap.PinType type, float radius)
+            => self.GetClosestPinPredicate(pos, radius, pin => pin.m_type == type);
+
         private static void ApplySharedMapExplored(this Minimap self, bool[] explored)
         {
             if (explored.Length != self.m_explored.Length)
@@ -88,27 +116,6 @@ namespace WeylandMod.SharedMap
 
                 self.m_fogTexture.Apply();
             }
-        }
-
-        private static Minimap.PinData GetClosestPinWithType(this Minimap self, Vector3 pos, Minimap.PinType type, float radius)
-        {
-            Minimap.PinData closestPin = null;
-            var closestDist = 0.0f;
-
-            foreach (var pin in self.m_pins)
-            {
-                if (pin.m_type != type)
-                    continue;
-
-                var dist = Utils.DistanceXZ(pos, pin.m_pos);
-                if (dist <= radius && (closestPin == null || dist < closestDist))
-                {
-                    closestPin = pin;
-                    closestDist = dist;
-                }
-            }
-
-            return closestPin;
         }
     }
 }

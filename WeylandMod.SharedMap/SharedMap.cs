@@ -10,6 +10,8 @@ namespace WeylandMod.SharedMap
 {
     internal class SharedMap : IFeature
     {
+        public const string RpcAdminPinRemoveName = "RPC_WeylandMod_AdminPinRemove";
+
         public IFeatureConfig Config => _config;
 
         private readonly ManualLogSource _logger;
@@ -49,7 +51,8 @@ namespace WeylandMod.SharedMap
             On.Game.SpawnPlayer += SpawnPlayerHook;
             On.World.SaveWorldMetaData += SaveWorldMetaDataHook;
             On.Minimap.AddPin += AddPinHook;
-            On.Minimap.RemovePin_PinData += RemovePinHook;
+            On.Minimap.RemovePin_PinData += RemovePinDataHook;
+            On.Minimap.RemovePin_Vector3_float += RemovePinRadiusHook;
             On.Minimap.UpdateNameInput += UpdateNameInputHook;
         }
 
@@ -66,7 +69,8 @@ namespace WeylandMod.SharedMap
             On.Game.SpawnPlayer -= SpawnPlayerHook;
             On.World.SaveWorldMetaData -= SaveWorldMetaDataHook;
             On.Minimap.AddPin -= AddPinHook;
-            On.Minimap.RemovePin_PinData -= RemovePinHook;
+            On.Minimap.RemovePin_PinData -= RemovePinDataHook;
+            On.Minimap.RemovePin_Vector3_float -= RemovePinRadiusHook;
             On.Minimap.UpdateNameInput -= UpdateNameInputHook;
         }
 
@@ -119,7 +123,7 @@ namespace WeylandMod.SharedMap
             if (_config.Enabled && ZNet.m_isServer)
             {
                 _logger.LogDebug("LoadSharedMap");
-                ZNet.m_world.LoadSharedMap();
+                ZNet.m_world.LoadSharedMap(_config.SharedPins);
             }
         }
 
@@ -169,9 +173,9 @@ namespace WeylandMod.SharedMap
             return pin;
         }
 
-        private void RemovePinHook(On.Minimap.orig_RemovePin_PinData orig, Minimap self, Minimap.PinData pin)
+        private void RemovePinDataHook(On.Minimap.orig_RemovePin_PinData orig, Minimap self, Minimap.PinData pin)
         {
-            _logger.LogDebug($"RemovePin Pos={pin.m_pos} Type={pin.m_type} Name={pin.m_name}");
+            _logger.LogDebug($"RemovePinData Pos={pin.m_pos} Type={pin.m_type} Name={pin.m_name}");
 
             orig(self, pin);
 
@@ -182,6 +186,25 @@ namespace WeylandMod.SharedMap
                     SharedPinData.Write(pin, new ZPackage())
                 );
             }
+        }
+
+        private bool RemovePinRadiusHook(On.Minimap.orig_RemovePin_Vector3_float orig, Minimap self, Vector3 pos, float radius)
+        {
+            _logger.LogDebug($"RemovePinRadius Pos={pos} Radius={radius}");
+
+            if (orig(self, pos, radius))
+                return true;
+
+            var pinData = self.GetClosestPinPredicate(pos, radius, pin => pin.m_save == false);
+            if (_config.AdminCanRemoveSharedPins && pinData != null)
+            {
+                ZRoutedRpc.instance.InvokeRoutedRPC(
+                    SharedMapComponent.RpcSharedPinAdminRemoveName,
+                    SharedPinData.Write(pinData, new ZPackage())
+                );
+            }
+
+            return false;
         }
 
         private void UpdateNameInputHook(On.Minimap.orig_UpdateNameInput orig, Minimap self)
