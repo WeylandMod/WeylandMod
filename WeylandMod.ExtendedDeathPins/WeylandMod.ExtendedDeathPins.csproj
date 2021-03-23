@@ -10,7 +10,7 @@
             <HintPath>..\Dependencies\Valheim\assembly_valheim.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="BepInEx, Version=5.4.8.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="BepInEx, Version=5.4.9.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>..\Dependencies\BepInEx\BepInEx.dll</HintPath>
             <Private>False</Private>
         </Reference>
