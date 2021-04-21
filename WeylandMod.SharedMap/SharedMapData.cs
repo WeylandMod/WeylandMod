@@ -59,11 +59,12 @@ namespace WeylandMod.SharedMap
 
     internal class SharedPinData
     {
-        private const int Version = 1;
+        private const int Version = 2;
 
         public Vector3 Pos;
         public Minimap.PinType Type;
         public string Name;
+        public bool IsChecked;
 
         public static ZPackage Write(Minimap.PinData self, ZPackage pkg)
         {
@@ -72,17 +73,19 @@ namespace WeylandMod.SharedMap
             pkg.Write(self.m_pos.z);
             pkg.Write((byte) self.m_type);
             pkg.Write(self.m_name);
+            pkg.Write(self.m_checked);
             return pkg;
         }
 
         public static SharedPinData Read(ZPackage pkg)
         {
-            pkg.ReadInt(); // Version
+            var version = pkg.ReadInt(); // Version
             return new SharedPinData
             {
                 Pos = new Vector3(pkg.ReadSingle(), 0.0f, pkg.ReadSingle()),
                 Type = (Minimap.PinType) pkg.ReadByte(),
                 Name = pkg.ReadString(),
+                IsChecked = version > 1 && pkg.ReadBool(),
             };
         }
     }

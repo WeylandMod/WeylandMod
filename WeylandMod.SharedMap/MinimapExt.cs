@@ -21,7 +21,7 @@ namespace WeylandMod.SharedMap
                 var closestPin = self.GetClosestPinWithType(pinData.Pos, pinData.Type, 1.0f);
                 if (closestPin == null)
                 {
-                    self.AddPin(pinData.Pos, pinData.Type, pinData.Name, false, false);
+                    self.AddPin(pinData.Pos, pinData.Type, pinData.Name, false, pinData.IsChecked);
                 }
                 else if (!closestPin.m_save)
                 {
@@ -38,7 +38,7 @@ namespace WeylandMod.SharedMap
             if (closestPin != null)
                 return;
 
-            self.AddPin(pinData.Pos, pinData.Type, pinData.Name, false, false);
+            self.AddPin(pinData.Pos, pinData.Type, pinData.Name, false, pinData.IsChecked);
         }
 
         public static void SharedPinRemove(this Minimap self, ZPackage pkg)
@@ -61,6 +61,17 @@ namespace WeylandMod.SharedMap
                 return;
 
             closestPin.m_name = pinData.Name;
+        }
+
+        public static void SharedPinCheckUpdate(this Minimap self, ZPackage pkg)
+        {
+            var pinData = SharedPinData.Read(pkg);
+
+            var closestPin = self.GetClosestPinWithType(pinData.Pos, pinData.Type, 1.0f);
+            if (closestPin == null || closestPin.m_save)
+                return;
+
+            closestPin.m_checked = pinData.IsChecked;
         }
 
         public static Minimap.PinData GetClosestPinPredicate(this Minimap self, Vector3 pos, float radius, Predicate<Minimap.PinData> predicate)

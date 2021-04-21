@@ -54,6 +54,7 @@ namespace WeylandMod.SharedMap
             On.Minimap.RemovePin_PinData += RemovePinDataHook;
             On.Minimap.RemovePin_Vector3_float += RemovePinRadiusHook;
             On.Minimap.UpdateNameInput += UpdateNameInputHook;
+            On.Minimap.OnMapLeftClick += OnMapLeftClickHook;
         }
 
         public void OnDisconnect()
@@ -222,6 +223,22 @@ namespace WeylandMod.SharedMap
             ZRoutedRpc.instance.InvokeRoutedRPC(
                 SharedMapComponent.RpcSharedPinNameUpdateName,
                 SharedPinData.Write(pin, new ZPackage())
+            );
+        }
+
+        private void OnMapLeftClickHook(On.Minimap.orig_OnMapLeftClick orig, Minimap self)
+        {
+            orig(self);
+
+            var closestPin = self.GetClosestPin(self.ScreenToWorldPoint(Input.mousePosition), self.m_removeRadius * (self.m_largeZoom * 2f));
+            if (closestPin == null)
+                return;
+
+            _logger.LogDebug($"OnMapLeftClick Pos={closestPin.m_pos} Type={closestPin.m_type} Name={closestPin.m_name}");
+
+            ZRoutedRpc.instance.InvokeRoutedRPC(
+                SharedMapComponent.RpcSharedPinCheckUpdateName,
+                SharedPinData.Write(closestPin, new ZPackage())
             );
         }
     }

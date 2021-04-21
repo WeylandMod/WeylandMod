@@ -38,6 +38,10 @@
             <HintPath>..\Dependencies\Unity\UnityEngine.CoreModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\Dependencies\Unity\UnityEngine.InputLegacyModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
         <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>..\Dependencies\Unity\UnityEngine.UI.dll</HintPath>
             <Private>False</Private>
