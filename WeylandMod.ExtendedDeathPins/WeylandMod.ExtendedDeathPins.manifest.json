@@ -1,9 +1,9 @@
 {
   "name": "WeylandMod_ExtendedDeathPins",
   "description": "All deaths are marked and player can remove death pins.",
-  "version_number": "1.1.0",
+  "version_number": "1.5.0",
   "website_url": "https://github.com/WeylandMod/WeylandMod",
   "dependencies": [
-    "WeylandMod-WeylandMod_Core-1.2.0"
+    "WeylandMod-WeylandMod_Core-1.5.0"
   ]
 }

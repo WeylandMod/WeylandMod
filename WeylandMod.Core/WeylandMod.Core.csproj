@@ -14,20 +14,20 @@
             <HintPath>..\Dependencies\Valheim\assembly_valheim.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="BepInEx, Version=5.4.9.0, Culture=neutral, PublicKeyToken=null">
-            <HintPath>..\Dependencies\BepInEx\BepInEx.dll</HintPath>
-            <Private>False</Private>
+        <Reference Include="BepInEx, Version=5.4.10.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\Dependencies\BepInEx\BepInEx.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="MMHOOK_assembly_valheim, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>..\Dependencies\Hooks\MMHOOK_assembly_valheim.dll</HintPath>
         </Reference>
         <Reference Include="Mono.Cecil, Version=0.10.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e">
-            <HintPath>..\Dependencies\BepInEx\Mono.Cecil.dll</HintPath>
-            <Private>False</Private>
+          <HintPath>..\Dependencies\BepInEx\Mono.Cecil.dll</HintPath>
+          <Private>False</Private>
         </Reference>
-        <Reference Include="MonoMod.Utils, Version=21.1.11.1, Culture=neutral, PublicKeyToken=null">
-            <HintPath>..\Dependencies\BepInEx\MonoMod.Utils.dll</HintPath>
-            <Private>False</Private>
+        <Reference Include="MonoMod.Utils, Version=21.4.21.3, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\Dependencies\BepInEx\MonoMod.Utils.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>..\Dependencies\Unity\UnityEngine.dll</HintPath>
@@ -40,7 +40,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="WeylandMod.Core.manifest.json"/>
+        <None Remove="WeylandMod.Core.manifest.json" />
         <Content Include="WeylandMod.Core.manifest.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

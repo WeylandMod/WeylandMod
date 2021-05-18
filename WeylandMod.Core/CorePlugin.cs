@@ -9,7 +9,7 @@ using MonoMod.Cil;
 
 namespace WeylandMod.Core
 {
-    [BepInPlugin("WeylandMod.Core", "WeylandMod.Core", "1.2.0")]
+    [BepInPlugin("WeylandMod.Core", "WeylandMod.Core", "1.5.0")]
     internal class CorePlugin : BaseUnityPlugin
     {
         private readonly IDictionary<string, IFeature> _features = new Dictionary<string, IFeature>();

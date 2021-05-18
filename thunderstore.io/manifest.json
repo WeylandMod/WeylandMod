@@ -1,16 +1,16 @@
 {
   "name": "WeylandMod",
   "description": "WeylandMod is a Valheim QoL mods collection, like shared map exploration, shared pins, item radar and extended storage.",
-  "version_number": "1.4.0",
+  "version_number": "1.5.0",
   "website_url": "https://github.com/WeylandMod/WeylandMod",
   "dependencies": [
-    "WeylandMod-WeylandMod_Core-1.2.0",
-    "WeylandMod-WeylandMod_ExtendedDeathPins-1.1.0",
-    "WeylandMod-WeylandMod_ExtendedServerPassword-1.1.0",
-    "WeylandMod-WeylandMod_ExtendedStorage-1.1.0",
-    "WeylandMod-WeylandMod_FavoriteServers-1.1.0",
-    "WeylandMod-WeylandMod_ItemRadar-1.1.0",
-    "WeylandMod-WeylandMod_PreciseRotation-1.1.0",
-    "WeylandMod-WeylandMod_SharedMap-1.3.0"
+    "WeylandMod-WeylandMod_Core-1.5.0",
+    "WeylandMod-WeylandMod_ExtendedDeathPins-1.5.0",
+    "WeylandMod-WeylandMod_ExtendedServerPassword-1.5.0",
+    "WeylandMod-WeylandMod_ExtendedStorage-1.5.0",
+    "WeylandMod-WeylandMod_FavoriteServers-1.5.0",
+    "WeylandMod-WeylandMod_ItemRadar-1.5.0",
+    "WeylandMod-WeylandMod_PreciseRotation-1.5.0",
+    "WeylandMod-WeylandMod_SharedMap-1.5.0"
   ]
 }

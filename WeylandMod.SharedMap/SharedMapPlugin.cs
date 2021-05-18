@@ -3,7 +3,7 @@ using WeylandMod.Core;
 
 namespace WeylandMod.SharedMap
 {
-    [BepInPlugin("WeylandMod.SharedMap", "WeylandMod.SharedMap", "1.3.0")]
+    [BepInPlugin("WeylandMod.SharedMap", "WeylandMod.SharedMap", "1.5.0")]
     internal class SharedMapPlugin : BaseWeylandModPlugin
     {
         protected override IFeature CreateFeature() => new SharedMap(Logger, Config);

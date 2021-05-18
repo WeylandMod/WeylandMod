@@ -1,10 +1,10 @@
 {
   "name": "WeylandMod_Core",
   "description": "Core package for all WeylandMod features.",
-  "version_number": "1.2.0",
+  "version_number": "1.5.0",
   "website_url": "https://github.com/WeylandMod/WeylandMod",
   "dependencies": [
-    "denikson-BepInExPack_Valheim-5.4.900",
+    "denikson-BepInExPack_Valheim-5.4.1001",
     "ValheimModding-HookGenPatcher-0.0.2"
   ]
 }
