@@ -91,7 +91,7 @@ namespace WeylandMod.SharedMap
         {
             new ILCursor(il).GotoNext(x => x.MatchLdfld<Minimap>("m_pinPrefab"))
                 .Remove()
-                .Emit(OpCodes.Ldloc, 4) // push pin, Minimap.this already on stack
+                .Emit(OpCodes.Ldloc, 5) // push pin, Minimap.this already on stack
                 .EmitDelegate<Func<Minimap, Minimap.PinData, GameObject>>(GetPinPrefab);
         }
 
@@ -157,11 +157,12 @@ namespace WeylandMod.SharedMap
             Minimap.PinType type,
             string name,
             bool save,
-            bool isChecked)
+            bool isChecked,
+            long ownerID)
         {
-            _logger.LogDebug($"AddPin Pos={pos} Type={type} Name={name} Save={save} Checked={isChecked}");
+            _logger.LogDebug($"AddPin Pos={pos} Type={type} Name={name} Save={save} Checked={isChecked} OwnerID={ownerID}");
 
-            var pin = orig(self, pos, type, name, save, isChecked);
+            var pin = orig(self, pos, type, name, save, isChecked, ownerID);
 
             if (save && SharedMapData.SharedTypes.Contains(type) && Player.m_localPlayer != null)
             {

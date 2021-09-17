@@ -21,7 +21,7 @@ namespace WeylandMod.SharedMap
                 var closestPin = self.GetClosestPinWithType(pinData.Pos, pinData.Type, 1.0f);
                 if (closestPin == null)
                 {
-                    self.AddPin(pinData.Pos, pinData.Type, pinData.Name, false, pinData.IsChecked);
+                    self.AddPin(pinData.Pos, pinData.Type, pinData.Name, false, pinData.IsChecked, pinData.OwnerId);
                 }
                 else if (!closestPin.m_save)
                 {
@@ -38,7 +38,7 @@ namespace WeylandMod.SharedMap
             if (closestPin != null)
                 return;
 
-            self.AddPin(pinData.Pos, pinData.Type, pinData.Name, false, pinData.IsChecked);
+            self.AddPin(pinData.Pos, pinData.Type, pinData.Name, false, pinData.IsChecked, pinData.OwnerId);
         }
 
         public static void SharedPinRemove(this Minimap self, ZPackage pkg)

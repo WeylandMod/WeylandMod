@@ -1,9 +1,9 @@
 {
   "name": "WeylandMod_SharedMap",
   "description": "Shared map exploration and custom pins between all players on server.",
-  "version_number": "1.5.0",
+  "version_number": "1.6.0",
   "website_url": "https://github.com/WeylandMod/WeylandMod",
   "dependencies": [
-    "WeylandMod-WeylandMod_Core-1.5.0"
+    "WeylandMod-WeylandMod_Core-1.6.0"
   ]
 }
